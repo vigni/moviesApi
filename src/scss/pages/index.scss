@@ -1,0 +1,28 @@
+body{
+    font-family: Oswald;
+    a:link{
+        text-decoration:none; 
+        color: black;
+    }
+    .header{
+        width: 100%;
+        background-color: wheat;
+            .header-content{
+                width: 60%;
+                display: flex;
+                justify-content: space-around;
+                line-height: 80px;
+            
+            .form-inline{
+                margin-top: 20px;
+                width: 30%;
+            }
+
+            #favorite{
+                border-left: solid ;
+                padding-left: 2 0px;
+            }
+        }
+    }
+}
+
