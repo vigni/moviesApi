@@ -11,20 +11,74 @@
 <body>
     <div class="block">
         <header class="header">
-            <div class="header-content">
-                <span id="title">App Movies</span>
-                <form class="form-inline md-form form-sm mt-0">
-                    <i class="fas fa-search" aria-hidden="true"></i>
-                    <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search" aria-label="Search">
-                </form> 
-                <a href="#" id="favorite">My Favorites</a>
-            
-            </div>
+            <nav class="header-content">
+                <div class="logo-section">
+                   <img src="src/img/moviee.png" alt="" height="50px" width="50px">
+                   <a href="#"><span class="title">Movies App</span></a> 
+                </div>
                 
-            
+                <form class="form-inline">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Rechercher" aria-label="Search">
+                </form>
+                <div class="menu">
+                    <a href="#"class="home">Home</a>
+                    <a href="#" class="favorite">Mes favoris</a>
+                </div>   
+            </nav>
+  
         </header>
     </div>
-    
+
+    <div class="home-container col-12">
+        <div class="block col-10 container">
+                <h1>Les derniers films</h1>
+            <div class="home-content row">
+                <div id="articles" class="col-7">
+                    <div class="card" >
+                        <div class="row no-gutters">
+                            <div class="col-md-4">
+                                <img src="..." class="card-img" alt="...">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">Card title</h5>
+                                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
+                                        additional content. This content is a little bit longer.</p>
+                                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="filter" class="col-5">
+                    <div class="card" >
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+                                content.</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Cras justo odio</li>
+                            <li class="list-group-item">Dapibus ac facilisis in</li>
+                            <li class="list-group-item">Vestibulum at eros</li>
+                        </ul>
+                        <div class="card-body">
+                            <a href="#" class="card-link">Card link</a>
+                            <a href="#" class="card-link">Another link</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+        </div>
+
+    </div>
 
     <div id="app"></div>
     <script src="bundle.js"></script>

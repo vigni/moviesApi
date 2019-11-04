@@ -1,26 +1,62 @@
 body{
-    font-family: Oswald;
+    font-family: Montserrat;
     a:link{
         text-decoration:none; 
         color: black;
     }
+    
     .header{
         width: 100%;
-        background-color: wheat;
-            .header-content{
-                width: 60%;
-                display: flex;
-                justify-content: space-around;
-                line-height: 80px;
-            
-            .form-inline{
-                margin-top: 20px;
-                width: 30%;
+        background-color:  #18C98D;
+        
+        .header-content{
+            width: 100%;
+            display: flex;
+            align-items: center;
+            height: 80px;
+            justify-content: space-between;
+            .logo-section{
+                margin-left: 50px;
             }
-
-            #favorite{
-                border-left: solid ;
-                padding-left: 2 0px;
+            .title{
+                margin-left: 20px;
+                font-size: 1.2em;
+                font-weight: bold;
+            }
+            .form-inline{
+                width: 40%;
+                justify-content: center;
+            }
+            .menu{
+                margin-right: 50px;
+                a:hover{
+                    text-decoration: underline;
+                }
+            }
+            .favorite{
+                border-left: solid 2px;
+                padding: 10px 20px;
+            }
+            .home{
+                padding: 10px 20px;
+            }
+        }
+    }
+    .home-container{
+        display: flex;
+        justify-content: center;
+        h1{
+            padding: 30px 20px 50px 0;
+        }
+        .card{
+            box-shadow: 5px 5px 5px rgba(29, 29, 29, 0.3);
+        }
+        #filter{
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+            .card{
+                width: 60%;
             }
         }
     }
