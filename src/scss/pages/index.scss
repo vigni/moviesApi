@@ -1,3 +1,4 @@
+$primaryColor: #18C98D;
 body{
     font-family: Montserrat;
     a:link{
@@ -7,7 +8,7 @@ body{
     
     .header{
         width: 100%;
-        background-color:  #18C98D;
+        background-color: $primaryColor;
         
         .header-content{
             width: 100%;
@@ -15,6 +16,7 @@ body{
             align-items: center;
             height: 80px;
             justify-content: space-between;
+
             .logo-section{
                 margin-left: 50px;
             }
@@ -51,12 +53,69 @@ body{
         .card{
             box-shadow: 5px 5px 5px rgba(29, 29, 29, 0.3);
         }
-        #filter{
+        #options{
             display: flex;
             justify-content: flex-end;
             width: 100%;
             .card{
                 width: 60%;
+            }
+            .top{
+                display: flex;
+                justify-content: space-around;
+                margin-bottom: 20px;
+                .btn{
+                    border-color: $primaryColor;
+                    padding: 4px 15px 4px 15px;
+
+                }
+                .btn.active{
+                    background-color: $primaryColor;
+                    color: white;
+                }        
+                .btn:hover{
+                    background-color: $primaryColor;
+                    color: white;   
+                }        
+            }
+            .body-filter{
+                width: 100%;
+                height: 100%;
+                display: none;
+                &.active{
+                    display: block;
+                }
+                .year{
+                    height: 60px;
+                    border-bottom: solid 1px $primaryColor;
+                    margin-bottom: 15px;
+                }
+                .kind{
+                    padding-bottom: 20px;
+                    border-bottom: solid 1px $primaryColor;
+
+                    .list{
+                        margin-top: 15px;
+                        height: 90px;
+                        overflow:auto;
+                        
+
+                        input[type=checkbox] {
+                            height: 15px;
+                            width: 15px;
+                        }
+                        
+                    }
+                }
+                .actor{
+                    padding-top: 20px;
+                    padding-bottom: 20px;
+                    border-bottom: solid 1px $primaryColor;
+                }
+                .during{
+                    padding-top: 15px;
+
+                }
             }
         }
     }
