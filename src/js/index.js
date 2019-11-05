@@ -5,8 +5,10 @@ import "./services/searchApi.js";
 const latestMovies = getLatestMovies();
 console.log(latestMovies);
 
-document.getElementById('output').innerHTML = location.search;
-$(".chosen-select").chosen();
+$('#btn-order').click(function(){
+    $(this).removeClass('active');
+    $('#btn-filter').addClass('active');
 
+});
 
 document.getElementById("app").innerHTML = "";
