@@ -51,26 +51,59 @@
                         </div>
                     </div>
                 </div>
-                <div id="filter" class="col-5">
-                    <div class="card" >
+                <div id="options" class="col-5">
+                    <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                                content.</p>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Cras justo odio</li>
-                            <li class="list-group-item">Dapibus ac facilisis in</li>
-                            <li class="list-group-item">Vestibulum at eros</li>
-                        </ul>
-                        <div class="card-body">
-                            <a href="#" class="card-link">Card link</a>
-                            <a href="#" class="card-link">Another link</a>
+                            <div class="top">
+                                <button type="button" class="btn filter active" onclick="">Filtrer</button>
+                                <button type="button" class=" btn order" onclick="">Trier</button>
+                            </div>
+                            <div class="body-filter">
+                                <div class="year">
+                                    <input class="form-control" id="year" placeholder="Année">
+                                </div>
+                                <div class="kind">
+                                    <span class="title">Genre :</span>
+                                    <div class="list">
+                                        <div>
+                                            <input type="checkbox" class="checkbox" id="action" name="action">
+                                            <label for="action">Action</label>
+                                        </div>
+                                
+                                        <div>
+                                            <input type="checkbox" class="checkbox" id="adventure" name="adventure">
+                                            <label for="adventure">Aventure</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" class="checkbox" id="drama" name="drama">
+                                            <label for="drama">Dramatique</label>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" class="checkbox" id="horror" name="horror">
+                                            <label for="horror">Horreur</label>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                <div class="actor">
+                                    <input class="form-control" id="acteur" placeholder="Acteur">
+                                </div>
+                                <div class="during">
+                                    <form>
+                                        <div class="form-group">
+                                            <label for="formControlRange">Durée</label>
+                                            <input type="range" class="form-control-range" id="formControlRange">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="order">
+
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
+                
 
 
 
