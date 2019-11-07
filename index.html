@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>The movies App</title>
+    <title>Movie Ni</title>
 </head>
 
 <body>
@@ -13,13 +13,13 @@
         <header class="header">
             <nav class="header-content">
                 <div class="logo-section">
-                   <img src="src/img/moviee.png" alt="" height="50px" width="50px">
-                   <a href="#"><span class="title">Movies App</span></a> 
+                   <img src="src/img/movie.png" alt="" height="50px" width="50px">
+                   <a href="#"><span class="title">Movie Ni</span></a> 
                 </div>
                 
                 <form class="form-inline">
-                    <i class="fas fa-search" aria-hidden="true"></i>
-                    <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Rechercher" aria-label="Search">
+                    
+                    <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Rechercher un film..." aria-label="Search">
                 </form>
                 <div class="menu">
                     <a href="#"class="home">Home</a>
@@ -33,32 +33,18 @@
     <div class="home-container col-12">
         <div class="block col-10 container">
                 <h1>Les derniers films</h1>
+                
             <div class="home-content row">
                 <div id="articles" class="col-7">
-                    <div class="card" >
-                        <div class="row no-gutters">
-                            <div class="col-md-4">
-                                <img src="..." class="card-img" alt="...">
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <h5 class="card-title">Card title</h5>
-                                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
-                                        additional content. This content is a little bit longer.</p>
-                                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div id="options" class="col-5">
                     <div class="card">
                         <div class="card-body">
                             <div class="top">
-                                <button type="button" id="btn-filter" class="btn filter active" onclick="">Filtrer</button>
-                                <button type="button" id="btn-order" class=" btn order" onclick="">Trier</button>
+                                <button type="button" id="btn-filter" class="btn filter active" onclick="activeFilter()">Filtrer</button>
+                                <button type="button" id="btn-order" class=" btn order" onclick="activeOrder()">Trier</button>
                             </div>
-                            <div class="body-filter">
+                            <div class="body-filter active">
                                 <div class="year">
                                     <input class="form-control" id="year" placeholder="Année">
                                 </div>
@@ -97,7 +83,10 @@
                                     </form>
                                 </div>
                             </div>
-                            <div class="order">
+
+                            
+
+                            <div class="body-order">
                                 <div class="pertinence">
                                     <span>Pertinence</span>
                                 </div>
@@ -111,10 +100,6 @@
                         </div>
                     </div>
                 </div>
-                
-
-
-
 
 
         </div>
@@ -122,7 +107,9 @@
     </div>
 
     <div id="app"></div>
+    <!-- <script src="node-modules/rater-js/index.js"> </script> -->
     <script src="bundle.js"></script>
+  
 </body>
 
 </html>
