@@ -16,9 +16,7 @@
                    <img src="src/img/movie.png" alt="" height="50px" width="50px">
                    <a href="#"><span class="title">Movie Ni</span></a> 
                 </div>
-                
                 <form class="form-inline">
-                    
                     <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Rechercher un film..." aria-label="Search">
                 </form>
                 <div class="menu">
@@ -41,14 +39,14 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="top">
-                                <button type="button" id="btn-filter" class="btn filter active" onclick="activeFilter()">Filtrer</button>
-                                <button type="button" id="btn-order" class=" btn order" onclick="activeOrder()">Trier</button>
+                                <button type="button" id="btn-filter" class="btn filter " onclick="activeFilter()">Filtrer</button>
+                                <button type="button" id="btn-order" class=" btn order active" onclick="activeOrder()">Trier</button>
                             </div>
-                            <div class="body-filter active">
-                                <div class="year">
+                            <div id="body-filter">
+                                <div class="year section">
                                     <input class="form-control" id="year" placeholder="Année">
                                 </div>
-                                <div class="kind">
+                                <div class="kind section">
                                     <span class="title">Genre :</span>
                                     <div class="list">
                                         <div>
@@ -71,10 +69,10 @@
                                     </div>
                                     
                                 </div>
-                                <div class="actor">
+                                <div class="actor section">
                                     <input class="form-control" id="acteur" placeholder="Acteur">
                                 </div>
-                                <div class="during">
+                                <div class="during section">
                                     <form>
                                         <div class="form-group">
                                             <label for="formControlRange">Durée</label>
@@ -83,18 +81,30 @@
                                     </form>
                                 </div>
                             </div>
-
-                            
-
-                            <div class="body-order">
-                                <div class="pertinence">
-                                    <span>Pertinence</span>
+                            <div id="body-order" class="active">
+                                <div class="pertinence section">
+                                    <span class="title">Pertinence :</span>
+                                
+                                    <select class=form-control>
+                                        <option value=un>Croissant</option>
+                                        <option value=deux>Décroissant</option>
+                                    </select>
                                 </div>
-                                <div class="year">
-                                    <span>Année</span>
+                                <div class="year section">
+                                    <span class="title">Année :</span>
+                                
+                                    <select class=form-control>
+                                        <option value=un>Croissant</option>
+                                        <option value=deux>Décroissant</option>
+                                    </select>
                                 </div>
-                                <div class="during">
-                                    <span>Durée</span>
+                                <div class="during section">
+                                    <span class="title">Durée :</span>
+                                
+                                    <select class=form-control>
+                                        <option value=un>Croissant</option>
+                                        <option value=deux>Décroissant</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
