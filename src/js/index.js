@@ -24,10 +24,10 @@ recentMovies("", results => {
         
         results.results.map((element) => {
 
-            // const oneMovie = getOneMovie(element.id);
-            // oneMovie("", results =>{
-            //     console.log(results.results);
-            // });
+            const oneMovie = getOneMovie(element.id);
+            oneMovie("", resp =>{
+                console.log(resp);
+            });
 
             var date = element.release_date.split('-');
             var new_date=  date[2] + '-' + date[1] + '-' + date[0];
@@ -35,13 +35,14 @@ recentMovies("", results => {
             html += '<div class="card">';
                 html += '<div class="row no-gutters">';
                     html += '<div class="col-md-4">';
-                        html += '<img width="50px" height="150px" id="picture" src="' + 'https://image.tmdb.org/t/p/original/' + element.poster_path + '" class="card-img">';
+                        html += '<img  height="250px" id="picture" src="' + 'https://image.tmdb.org/t/p/original/' + element.poster_path + '" class="card-img">';
                     html += '</div>'
                     html += '<div class="col-md-8">'
                         html += '<div class="card-body">';
                             html += '<h5 class="card-title">' + element.title + '</h5>'
                             html += '<p class="card-text"><small class="text-muted">'+ new_date +'</small></p>'
-                            html += '<div class="button-section"> <button type="button" class="btn">Voir plus</button></div>'
+
+                            html += '<div class="button-section"> <button type="button" class="btn plus">Voir plus ></button></div>'
                             html += '</div>'
                     html += '</div>'
                 html += '</div>'

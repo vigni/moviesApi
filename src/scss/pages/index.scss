@@ -1,9 +1,11 @@
-$primaryColor: #7451eb;
 body{
     font-family: Montserrat;
     a:link{
         text-decoration:none; 
         color: black;
+    }
+    .btn:focus{
+        box-shadow: none;
     }
     //Menu
     .header{
@@ -55,23 +57,45 @@ body{
         display: flex;
         justify-content: center;
         height: 100%;
-        
         background-color: rgb(240, 240, 240);
+        h1,p,p,span{
+            color: $secondaryColor;
+        }
         h1{
             padding: 30px 20px 50px 0;
         }
-        .card{
-            box-shadow: 5px 5px 5px rgba(29, 29, 29, 0.3);
-            margin-bottom: 50px;
-            .button-section{
-                width: 100%;
-                display: flex;
-                justify-content: flex-end;
+        .btn{
+            @include mixin-button;
             
-                .btn{
-                    background-color: $primaryColor;
-                    color: white;
+            &:hover{
+                @include mixin-button-hover;
+            }
+            &.active{
+                @include mixin-button-active;
+            } 
+        }
+        #articles{
+            .card{
+                box-shadow: 5px 5px 5px rgba(85, 85, 85, 0.3);
+                margin-bottom: 50px;
+                border-color: rgba(85, 85, 85, 0.4);
+                h5{
+                    font-weight: bold;
+                    color: $primaryColor;
                 }
+                .card-body{
+                    height: 100%;
+                    .button-section{
+                        width: 100%;
+                        display: flex;
+                        justify-content: flex-end;
+                        align-items: flex-end;
+                        .btn{
+                            margin-top: 60px;
+                        }
+                    }
+                }   
+                
             }
         }
 
@@ -89,19 +113,6 @@ body{
                 display: flex;
                 justify-content: space-around;
                 margin-bottom: 20px;
-                .btn{
-                    border-color: $primaryColor;
-                    padding: 4px 15px 4px 15px;
-                    &.active{
-                        background-color: $primaryColor;
-                        color: white;
-                    }   
-                }
-                     
-                .btn:hover{
-                    background-color: $primaryColor;
-                    color: white;   
-                }        
             }
 
             // section filtre

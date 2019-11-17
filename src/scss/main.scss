@@ -2,8 +2,12 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
 // @import url()
 
-//bootstrap component
+//Bootstrap component
 @import"~bootstrap/scss/bootstrap.scss";
 
+
+//Fichiers
+@import"./variable.scss";
+@import"./mixins.scss";
 @import"pages/index.scss";
 
