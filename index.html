@@ -13,14 +13,18 @@
         <header class="header">
             <nav class="header-content">
                 <div class="logo-section">
-                   <img src="src/img/n-logo-png.png" alt="" height="50px" width="50px">
-                   <a href="#"><span class="title">Vigni's</span></a> 
+                   <img src="src/img/v.png" alt="" height="50px" width="50px">
+                   <div class="title-site">
+                    <a href="#"><span class="title">Vinema</span></a> 
+
+                   </div>
                 </div>
                 <form class="form-inline">
                     <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Rechercher un film..." aria-label="Search">
+                    <i id="search" class="fas fa-search"></i>
                 </form>
                 <div class="menu">
-                    <a href="#"class="home">Home</a>
+                    <a href="#"class="home active">Home</a>
                     <a href="#" class="favorite">Mes favoris</a>
                 </div>   
             </nav>
@@ -42,7 +46,7 @@
                                 <button type="button" id="btn-filter" class="btn filter active" >Filtrer</button>
                                 <button type="button" id="btn-order" class=" btn order">Trier</button>
                             </div>
-                            <div id="body-filter">
+                            <div id="body-filter" class="active">
                                 <div class="year section">
                                     <input class="form-control" id="year" placeholder="Année">
                                 </div>
@@ -81,7 +85,7 @@
                                     </form>
                                 </div>
                             </div>
-                            <div id="body-order" class="active">
+                            <div id="body-order">
                                 <div class="pertinence section">
                                     <span class="title">Pertinence :</span>
                                 

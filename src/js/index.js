@@ -32,14 +32,13 @@ const generateCard = (poster, title, id, date, runtime, overview, average) => {
                       id="${id}"
                       onClick="sessionStorage.setItem(id, id)"
                     >
-                      <i style="color: red;" class="fas fa-heart"></i>
+                      <i style="color: red;" class="far fa-heart"></i>
                     </div>
                   </div>
-                  <p class="card-text" id ="section-date"><i class="fas fa-calendar-alt"></i><small class="text-muted" id="date">${`${datefr.getDate()}/${datefr.getMonth()}/${datefr.getFullYear()} | ${runtime} `} </small></p>
+                  <p class="card-text" id ="section-date"><i class="fas fa-calendar-alt"></i><small class="text-muted" id="date">${`${datefr.getDate()}/${datefr.getMonth()}/${datefr.getFullYear()} <span class="sep-date">|</span> ${runtime} `} </small></p>
 
                   <p class="card-text">${overview}</p>
-                  <p class="card-text">${average}</p>
-                  <button class="btn"> Voir plus </button>
+                  
                   <div class="container-stars">
                     <div class="stars-grey">
                       <i class="far fa-star"></i>
@@ -56,7 +55,7 @@ const generateCard = (poster, title, id, date, runtime, overview, average) => {
                       <i class="fas fa-star"></i>
                     </div>
                   </div>
-                  
+                  <button class="btn"> Voir plus ></button>
                 </div>
               </div>
             </div>
@@ -117,4 +116,8 @@ document.getElementById("btn-filter").onclick = () => {
 
 document.getElementById("btn-order").onclick = () => {
   activeOrder();
+};
+
+document.getElementById("search").onclick = () => {
+  searchMovies();
 };
