@@ -4,7 +4,7 @@ const getApiServices = (url, apiKey) => ({
   getOneMovie(idMovies, callback) {
     const request = axios.get(`${url}3/movie/${idMovies}?api_key=${apiKey}&language=fr-FR`);
 
-    request.then(({ data }) => callback(data));
+    return request.then(({ data }) => callback(data));
   },
 
   getLatestMovies(callback) {

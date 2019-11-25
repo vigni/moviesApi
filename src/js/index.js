@@ -1,7 +1,11 @@
 import "@fortawesome/fontawesome-free/js/all";
 import "../scss/main.scss";
+import posterIfNull from "../img/film.jpg";
+// import starsYellow from "../img/stars.png";
+// import starsGrey from "../img/starsGrey.png";
 
 import getApiServices from "./services/getApiServices";
+import { convertTime } from "./services/helpers";
 
 const url = "https://api.themoviedb.org/";
 const urlPictureApi = "https://image.tmdb.org/t/p/original/";
@@ -9,68 +13,86 @@ const apiKey = "f3644f42368c13e65beb101e19b5849d";
 const { getLatestMovies } = getApiServices(url, apiKey);
 const { getOneMovie } = getApiServices(url, apiKey);
 
-const convertTime = num => {
-  const hours = num / 60;
-  const minutes = num % 60;
-  // if (minutes < 10) {
-  //   minutes = "0" + minutes.toString();
-  // }
-  return `${hours}h${minutes}`;
-};
-
-const generateHtml = (results, urlPicture) => {
+const generateCard = (poster, title, id, date, runtime, overview, average) => {
+  const datefr = new Date(date);
+  const posterUrl = urlPictureApi + poster;
   let html = "";
-
-  results.forEach(element => {
-    let time = getOneMovie(element.id, resp => {
-      // console.log(convertTime(resp.runtime));
-      time += convertTime(resp.runtime);
-    });
-
-    console.log(element);
-    const date = new Date(element.release_date);
-
-    let { overview } = element;
-    // console.log(overview.length);
-    if (overview.length > 199) {
-      overview = `${element.overview.slice(0, 80)}...`;
-    }
-
-    html += `
+  html = `
       <div>
         <div class="card">
           <div class="row no-gutters">
             <div class="col-md-4">
-              <img  height="250px" id="picture" src="${urlPicture + element.poster_path}" class="card-img">
+              <img  height="250px" id="picture" src="${poster === null ? posterIfNull : posterUrl}" class="card-img">
             </div>
-
-            <div class="col-md-8">
-              <div class="card-body">
-                <div class="favoris">
-                  <h5 class="card-title">${element.title}</h5>
-                  <div
-                    id="${element.id}"
-                    onClick="sessionStorage.setItem(id, id)"
-                  >
-                    <i style="color: red;" class="fas fa-heart"></i>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <div class="favoris">
+                    <h5 class="card-title">${title}</h5>
+                    <div
+                      id="${id}"
+                      onClick="sessionStorage.setItem(id, id)"
+                    >
+                      <i style="color: red;" class="fas fa-heart"></i>
+                    </div>
                   </div>
-                </div>
-                <p class="card-text" id ="section-date"><i class="fas fa-calendar-alt"></i><small class="text-muted" id="date">${`${date.getDate()}/${date.getMonth()}/${date.getFullYear()} | ${time} `} </small></p>
+                  <p class="card-text" id ="section-date"><i class="fas fa-calendar-alt"></i><small class="text-muted" id="date">${`${datefr.getDate()}/${datefr.getMonth()}/${datefr.getFullYear()} | ${runtime} `} </small></p>
 
-                <p class="card-text">${overview}</p>
-                <p class="card-text">${element.vote_average}</p>
+                  <p class="card-text">${overview}</p>
+                  <p class="card-text">${average}</p>
+                  <button class="btn"> Voir plus </button>
+                  <div class="container-stars">
+                    <div class="stars-grey">
+                      <i class="far fa-star"></i>
+                      <i class="far fa-star"></i>
+                      <i class="far fa-star"></i>
+                      <i class="far fa-star"></i>
+                      <i class="far fa-star"></i>
+                    </div>
+                    <div class="stars-yellow">
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                    </div>
+                  </div>
+                  
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>`;
-  });
+        </div>`;
 
   return html;
 };
 
+const displayLatestMovies = results => {
+  let card = "";
+  results.forEach(element => {
+    getOneMovie(element.id, resp => {
+      // console.log(convertTime(resp.runtime));
+      const runtime = convertTime(resp.runtime);
+
+      let overviewSlice = element.overview;
+      if (overviewSlice.length > 199) {
+        overviewSlice = `${element.overview.slice(0, 80)}...`;
+      }
+      card += generateCard(
+        resp.poster_path,
+        resp.title,
+        resp.id,
+        resp.release_date,
+        runtime,
+        overviewSlice,
+        resp.vote_average
+      );
+      document.getElementById("articles").innerHTML = card;
+    });
+  });
+};
+
 getLatestMovies(results => {
-  document.getElementById("articles").innerHTML = generateHtml(results.results, urlPictureApi);
+  displayLatestMovies(results.results);
 });
 
 // Ajoute la classe active au contenue "filter" et bouton "filter" etenleve active à ceux de "order"
