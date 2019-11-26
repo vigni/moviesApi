@@ -1,6 +1,6 @@
 import "@fortawesome/fontawesome-free/js/all";
 import "../scss/main.scss";
-import posterIfNull from "../img/film.jpg";
+import posterUrlIfNull from "../img/film.jpg";
 // import starsYellow from "../img/stars.png";
 // import starsGrey from "../img/starsGrey.png";
 
@@ -16,13 +16,15 @@ const { getOneMovie } = getApiServices(url, apiKey);
 const generateCard = (poster, title, id, date, runtime, overview, average) => {
   const datefr = new Date(date);
   const posterUrl = urlPictureApi + poster;
+  const averageStarsPourcent = `${average * 10}%`;
+  // console.log(averageStarsPourcent);
   let html = "";
   html = `
       <div>
         <div class="card">
           <div class="row no-gutters">
             <div class="col-md-4">
-              <img  height="250px" id="picture" src="${poster === null ? posterIfNull : posterUrl}" class="card-img">
+              <img  height="250px" id="picture" src="${poster === null ? posterUrlIfNull : posterUrl}" class="card-img">
             </div>
               <div class="col-md-8">
                 <div class="card-body">
@@ -37,25 +39,28 @@ const generateCard = (poster, title, id, date, runtime, overview, average) => {
                   </div>
                   <p class="card-text" id ="section-date"><i class="fas fa-calendar-alt"></i><small class="text-muted" id="date">${`${datefr.getDate()}/${datefr.getMonth()}/${datefr.getFullYear()} <span class="sep-date">|</span> ${runtime} `} </small></p>
 
-                  <p class="card-text">${overview}</p>
-                  
-                  <div class="container-stars">
+                  <p class="card-text">${overview}</p>`;
+
+  html += `<div class="stars-container">
                     <div class="stars-grey">
                       <i class="far fa-star"></i>
                       <i class="far fa-star"></i>
                       <i class="far fa-star"></i>
                       <i class="far fa-star"></i>
                       <i class="far fa-star"></i>
+                    
+                      <div class="stars-yellow" style="width : ${averageStarsPourcent}">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                      </div>
+                      
                     </div>
-                    <div class="stars-yellow">
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
+                    <a> Voir plus > </a>
                     </div>
-                  </div>
-                  <button class="btn"> Voir plus ></button>
+                  
                 </div>
               </div>
             </div>
@@ -69,9 +74,7 @@ const displayLatestMovies = results => {
   let card = "";
   results.forEach(element => {
     getOneMovie(element.id, resp => {
-      // console.log(convertTime(resp.runtime));
       const runtime = convertTime(resp.runtime);
-
       let overviewSlice = element.overview;
       if (overviewSlice.length > 199) {
         overviewSlice = `${element.overview.slice(0, 80)}...`;

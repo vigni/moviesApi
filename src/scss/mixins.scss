@@ -1,16 +1,17 @@
-@mixin mixin-button{
-    border-color: $primaryColor;
-    color: $primaryColor;
-    padding: 4px 15px 4px 15px;
+@mixin mixin-button {
+  border-color: $primaryColor;
+  color: $primaryColor;
+  padding: 4px 15px 4px 15px;
 }
-@mixin mixin-button-hover{
-    border-color: $secondaryColor;
-    background-color: $secondaryColor;
-    color: white;
+
+@mixin mixin-button-hover {
+  border-color: $secondaryColor;
+  background-color: $secondaryColor;
+  color: white;
 }
-@mixin mixin-button-active{
-    background-color: $secondaryColor;
-    border-color: $secondaryColor;
-    color: white;
-    opacity: 1;
+@mixin mixin-button-active {
+  background-color: $secondaryColor;
+  border-color: $secondaryColor;
+  color: white;
+  opacity: 1;
 }
