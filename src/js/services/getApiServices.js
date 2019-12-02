@@ -16,18 +16,11 @@ const getApiServices = (url, apiKey) => ({
 
     request.then(({ data: results }) => callback(results));
   },
-
-  getDetailsMovie(callback) {
-    const request = axios.get(
-      `${url}3/discover/movie?sort_by=release_date.desc&api_key=${apiKey}&language=fr-FR&page=1`
-    );
-    request.then(({ data }) => callback(data));
-  },
   
   getMoviesBySearch(search, callback) {
     const request = axios.get(
-      `${url}3/search/movie?api_key=${apiKey}&language=fr_FR&query=${search}&page=1&include_adult=false`
-    );
+      `${url}3/search/movie?api_key=${apiKey}&language=fr-FR&query=${search}&page=1&include_adult=false`
+      );
     request.then(({ data }) => callback(data));
   }
 });

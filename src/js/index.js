@@ -5,70 +5,16 @@ import posterUrlIfNull from "../img/film.jpg";
 // import starsGrey from "../img/starsGrey.png";
 
 import getApiServices from "./services/getApiServices";
-import { convertTime } from "./services/helpers";
+import { convertTime, generateCard } from "./services/helpers";
 
 const url = "https://api.themoviedb.org/";
-const urlPictureApi = "https://image.tmdb.org/t/p/original/";
 const apiKey = "f3644f42368c13e65beb101e19b5849d";
+
 const { getLatestMovies } = getApiServices(url, apiKey);
 const { getOneMovie } = getApiServices(url, apiKey);
+const { getMoviesBySearch } = getApiServices(url, apiKey);
 
-const generateCard = (poster, title, id, date, runtime, overview, average) => {
-  const datefr = new Date(date);
-  const posterUrl = urlPictureApi + poster;
-  const averageStarsPourcent = `${average * 10}%`;
-  // console.log(averageStarsPourcent);
-  let html = "";
-  html = `
-      <div>
-        <div class="card">
-          <div class="row no-gutters">
-            <div class="col-md-4">
-              <img  height="250px" id="picture" src="${poster === null ? posterUrlIfNull : posterUrl}" class="card-img">
-            </div>
-              <div class="col-md-8">
-                <div class="card-body">
-                  <div class="favoris">
-                    <h5 class="card-title">${title}</h5>
-                    <div
-                      id="${id}"
-                      onClick="sessionStorage.setItem(id, id)"
-                    >
-                      <i style="color: red;" class="far fa-heart"></i>
-                    </div>
-                  </div>
-                  <p class="card-text" id ="section-date"><i class="fas fa-calendar-alt"></i><small class="text-muted" id="date">${`${datefr.getDate()}/${datefr.getMonth()}/${datefr.getFullYear()} <span class="sep-date">|</span> ${runtime} `} </small></p>
 
-                  <p class="card-text">${overview}</p>`;
-
-  html += `<div class="stars-container">
-                    <div class="stars-grey">
-                      <i class="far fa-star"></i>
-                      <i class="far fa-star"></i>
-                      <i class="far fa-star"></i>
-                      <i class="far fa-star"></i>
-                      <i class="far fa-star"></i>
-                    
-                      <div class="stars-yellow" style="width : ${averageStarsPourcent}">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                      </div>
-                      
-                    </div>
-                    <a> Voir plus > </a>
-                    </div>
-                  
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>`;
-
-  return html;
-};
 
 const displayLatestMovies = results => {
   let card = "";
@@ -88,10 +34,38 @@ const displayLatestMovies = results => {
         overviewSlice,
         resp.vote_average
       );
+      
+      document.getElementById("articles").innerHTML = card;
+      
+    });
+    
+  });
+};
+
+const displaySearchMovies = results => {
+  let card = "";
+  console.log(results);
+  results.forEach(element => {
+    getOneMovie(element.id, resp => {
+      const runtime = convertTime(resp.runtime);
+      let overviewSlice = element.overview;
+      if (overviewSlice.length > 199) {
+        overviewSlice = `${element.overview.slice(0, 80)}...`;
+      }
+      card += generateCard(
+        resp.poster_path,
+        resp.title,
+        resp.id,
+        resp.release_date,
+        runtime,
+        overviewSlice,
+        resp.vote_average,
+      );
       document.getElementById("articles").innerHTML = card;
     });
   });
 };
+
 
 getLatestMovies(results => {
   displayLatestMovies(results.results);
@@ -122,5 +96,19 @@ document.getElementById("btn-order").onclick = () => {
 };
 
 document.getElementById("search").onclick = () => {
-  searchMovies();
+  
+  const valueSearch = document.getElementById("searchBar").value;
+  
+  if(valueSearch != ""){
+    getMoviesBySearch(valueSearch, results => {
+      displaySearchMovies(results.results);
+    });
+  }
+  else{
+    getLatestMovies(results => {
+      displayLatestMovies(results.results);
+    });
+  }
+  
+  
 };
