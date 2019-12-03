@@ -1,4 +1,6 @@
 // eslint-disable-next-line import/prefer-default-export
+import posterUrlIfNull from "../../img/film.jpg";
+
 export const convertTime = num => {
   let time = "";
   if (num >= 60) {
@@ -24,6 +26,7 @@ export const convertTime = num => {
 
 export const generateCard = (poster, title, id, date, runtime, overview, average) => {
   const urlPictureApi = "https://image.tmdb.org/t/p/original/";
+
   const datefr = new Date(date);
   const posterUrl = urlPictureApi + poster;
   const averageStarsPourcent = `${average * 10}%`;
@@ -43,7 +46,7 @@ export const generateCard = (poster, title, id, date, runtime, overview, average
                       id="${id}"
                       onClick="sessionStorage.setItem(id, id)"
                     >
-                      <i style="color: red;" class="far fa-heart"></i>
+                      <i id="heart" style="color: red;" class="far fa-heart"></i>
                     </div>
                   </div>
                   <p class="card-text" id ="section-date"><i class="fas fa-calendar-alt"></i><small class="text-muted" id="date">${`${datefr.getDate()}/${datefr.getMonth()}/${datefr.getFullYear()} <span class="sep-date">|</span> ${runtime} `} </small></p>
@@ -67,7 +70,7 @@ export const generateCard = (poster, title, id, date, runtime, overview, average
                       </div>
                       
                     </div>
-                    <button type="button" class="btn"> Voir plus </button>
+                    <button type="button" class="btn" onClick="viewMore()" id="plus"> Voir plus </button>
                     </div>
                   
                 </div>
@@ -75,6 +78,19 @@ export const generateCard = (poster, title, id, date, runtime, overview, average
             </div>
           </div>
         </div>`;
+
+  return html;
+};
+
+export const generateHtmlDetailMovie = (poster, title, id, date, runtime, overview, average) => {
+  const urlPictureApi = "https://image.tmdb.org/t/p/original/";
+
+  const datefr = new Date(date);
+  const posterUrl = urlPictureApi + poster;
+  const averageStarsPourcent = `${average * 10}%`;
+  let html = "";
+  html = `
+      `;
 
   return html;
 };

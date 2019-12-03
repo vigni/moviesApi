@@ -1,8 +1,6 @@
 import "@fortawesome/fontawesome-free/js/all";
 import "../scss/main.scss";
-import posterUrlIfNull from "../img/film.jpg";
-// import starsYellow from "../img/stars.png";
-// import starsGrey from "../img/starsGrey.png";
+import "bootstrap/js/src/dropdown";
 
 import getApiServices from "./services/getApiServices";
 import { convertTime, generateCard } from "./services/helpers";
@@ -13,8 +11,6 @@ const apiKey = "f3644f42368c13e65beb101e19b5849d";
 const { getLatestMovies } = getApiServices(url, apiKey);
 const { getOneMovie } = getApiServices(url, apiKey);
 const { getMoviesBySearch } = getApiServices(url, apiKey);
-
-
 
 const displayLatestMovies = results => {
   let card = "";
@@ -34,17 +30,14 @@ const displayLatestMovies = results => {
         overviewSlice,
         resp.vote_average
       );
-      
+
       document.getElementById("articles").innerHTML = card;
-      
     });
-    
   });
 };
 
 const displaySearchMovies = results => {
   let card = "";
-  console.log(results);
   results.forEach(element => {
     getOneMovie(element.id, resp => {
       const runtime = convertTime(resp.runtime);
@@ -59,56 +52,71 @@ const displaySearchMovies = results => {
         resp.release_date,
         runtime,
         overviewSlice,
-        resp.vote_average,
+        resp.vote_average
       );
       document.getElementById("articles").innerHTML = card;
     });
   });
 };
 
-
 getLatestMovies(results => {
   displayLatestMovies(results.results);
 });
 
 // Ajoute la classe active au contenue "filter" et bouton "filter" etenleve active à ceux de "order"
-function activeFilter() {
-  document.getElementById("btn-filter").classList.add("active");
-  document.getElementById("btn-order").classList.remove("active");
-  document.getElementById("body-filter").classList.add("active");
-  document.getElementById("body-order").classList.remove("active");
-}
+// function activeFilter() {
+//   document.getElementById("btn-filter").classList.add("active");
+//   document.getElementById("btn-order").classList.remove("active");
+//   document.getElementById("body-filter").classList.add("active");
+//   document.getElementById("body-order").classList.remove("active");
+// }
 // Ajoute la classe active au contenue "order" et bouton "order" et enleve active à ceux de "filter"
 
-function activeOrder() {
-  document.getElementById("btn-filter").classList.remove("active");
-  document.getElementById("btn-order").classList.add("active");
-  document.getElementById("body-filter").classList.remove("active");
-  document.getElementById("body-order").classList.add("active");
-}
+// function activeOrder() {
+//   document.getElementById("btn-filter").classList.remove("active");
+//   document.getElementById("btn-order").classList.add("active");
+//   document.getElementById("body-filter").classList.remove("active");
+//   document.getElementById("body-order").classList.add("active");
+// }
 // Lors du clique sur le bouton filter ou trier
-document.getElementById("btn-filter").onclick = () => {
-  activeFilter();
+// document.getElementById("btn-filter").onclick = () => {
+//   activeFilter();
+// };
+
+// document.getElementById("btn-order").onclick = () => {
+//   activeOrder();
+// };
+
+// document.getElementById("search").onclick = () => {
+//   const valueSearch = document.getElementById("searchBar").value;
+//   if (valueSearch !== "") {
+//     getMoviesBySearch(valueSearch, results => {
+//       displaySearchMovies(results.results);
+//     });
+//   } else {
+//     getLatestMovies(results => {
+//       displayLatestMovies(results.results);
+//     });
+//   }
+// };
+window.viewMore = function() {
+  alert("NTM");
 };
 
-document.getElementById("btn-order").onclick = () => {
-  activeOrder();
-};
-
-document.getElementById("search").onclick = () => {
-  
-  const valueSearch = document.getElementById("searchBar").value;
-  
-  if(valueSearch != ""){
-    getMoviesBySearch(valueSearch, results => {
+function searchFilm(value) {
+  if (value !== "") {
+    getMoviesBySearch(value, results => {
       displaySearchMovies(results.results);
     });
-  }
-  else{
+  } else {
     getLatestMovies(results => {
       displayLatestMovies(results.results);
     });
   }
-  
-  
+}
+
+document.getElementById("search").onclick = () => {
+  const valueSearch = document.getElementById("searchBar").value;
+
+  searchFilm(valueSearch);
 };
