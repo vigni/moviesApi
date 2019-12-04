@@ -1,108 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Vinema</title>
-  </head>
 
-  <body>
-    <div class="block">
-      <header class="header">
-        <nav class="header-content">
-          <div class="logo-section">
-            <img src="src/img/v.png" alt="" height="50px" width="50px" />
-            <div class="title-site">
-              <a href="#"><span class="title">Vinema</span></a>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Vinema</title>
+</head>
+
+<body>
+  <div class="block">
+    <header class="header">
+      <nav class="header-content">
+        <div class="logo-section">
+          <a href=""><img src="src/img/v.png" alt="" height="50px" width="50px" /></a>
+          <div class="title-site">
+            <a href=""><span class="title">Vinema</span></a>
+          </div>
+        </div>
+
+
+
+        <div class="menu">
+          <div class="search-section">
+            <!-- <i id="remove-icone" class="fas fa-times fa-2x"></i> -->
+
+            <div class="input-group md-form form-sm form-2 pl-0">
+              <input class="form-control my-0 py-1 lime-border" type="text" placeholder="Rechercher un film..."
+                aria-label="Search" id="searchBar">
+
+              <div class="input-group-append">
+                <span class="input-group-text lime lighten-2" id="search"><i class="fas fa-search text-grey"
+                    aria-hidden="true"></i></span>
+              </div>
+
             </div>
           </div>
-          <form class="form-inline">
-            <input
-              class="form-control form-control-sm ml-3 w-75"
-              type="text"
-              placeholder="Rechercher un film..."
-              aria-label="Search"
-              id="searchBar"
-            />
-
-            <button onclick="searchFilm()" class="btn" id="search"><i class="fas fa-search"></i></button>
-          </form>
-          <div class="menu">
-            <a href="#" class="home">Home</a>
-            <div class="fav-container">
-              <a href="#" class="favorite active">Mes favoris</a>
-              <i style="color: white;" class="far fa-heart"></i>
-            </div>
+          <a href="#" class="home">Home</a>
+          <div class="fav-container">
+            <a href="#" class="favorite active">Mes favoris</a>
+            <i style="color: white;" class="far fa-heart"></i>
           </div>
-        </nav>
-      </header>
-    </div>
+        </div>
+      </nav>
+    </header>
+  </div>
 
-    <div class="home-container col-12">
-      <div class="block col-10 container">
-        <h1>Les derniers films :</h1>
+  <div class="home-container col-12 active" id="home">
+    <div class="block col-10 container">
+      <h1 id="title-home" class="active">Les derniers films :</h1>
+      <h1 id="title-search"></h1>
 
-        <div class="home-content row">
-          <div id="articles" class="col-7"></div>
-          <div id="options" class="col-4">
-            <div class="card">
-              <div class="card-body">
-                <div id="body-filter" class="active">
-                  <div class="dropdown">
-                    <button
-                      class="btn dropdown-toggle"
-                      type="button"
-                      id="dropdownMenuButton"
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      Trier par
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                      <a class="dropdown-item" href="#">Année</a>
-                      <a class="dropdown-item" href="#">Durée</a>
-                      <a class="dropdown-item" href="#">Pertinence</a>
+      <div class="home-content row">
+        <div id="articles" class="col-7"></div>
+        <div id="options" class="col-4">
+          <div class="card">
+            <div class="card-body">
+              <div id="body-filter" class="active">
+                <div class="dropdown">
+                  <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Trier par
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Année</a>
+                    <a class="dropdown-item" href="#">Durée</a>
+                    <a class="dropdown-item" href="#">Pertinence</a>
+                  </div>
+                </div>
+
+                <div class="year section">
+                  <input class="form-control" id="year" placeholder="Année" />
+                </div>
+                <div class="kind section">
+                  <span class="title">Genre :</span>
+                  <div class="list">
+                    <div>
+                      <input type="checkbox" class="checkbox" id="action" name="action" />
+                      <label for="action">Action</label>
+                    </div>
+
+                    <div>
+                      <input type="checkbox" class="checkbox" id="adventure" name="adventure" />
+                      <label for="adventure">Aventure</label>
+                    </div>
+                    <div>
+                      <input type="checkbox" class="checkbox" id="drama" name="drama" />
+                      <label for="drama">Dramatique</label>
+                    </div>
+                    <div>
+                      <input type="checkbox" class="checkbox" id="horror" name="horror" />
+                      <label for="horror">Horreur</label>
                     </div>
                   </div>
-
-                  <div class="year section">
-                    <input class="form-control" id="year" placeholder="Année" />
-                  </div>
-                  <div class="kind section">
-                    <span class="title">Genre :</span>
-                    <div class="list">
-                      <div>
-                        <input type="checkbox" class="checkbox" id="action" name="action" />
-                        <label for="action">Action</label>
-                      </div>
-
-                      <div>
-                        <input type="checkbox" class="checkbox" id="adventure" name="adventure" />
-                        <label for="adventure">Aventure</label>
-                      </div>
-                      <div>
-                        <input type="checkbox" class="checkbox" id="drama" name="drama" />
-                        <label for="drama">Dramatique</label>
-                      </div>
-                      <div>
-                        <input type="checkbox" class="checkbox" id="horror" name="horror" />
-                        <label for="horror">Horreur</label>
-                      </div>
+                </div>
+                <div class="actor section">
+                  <input class="form-control" id="acteur" placeholder="Acteur" />
+                </div>
+                <div class="during section">
+                  <form>
+                    <div class="form-group">
+                      <label for="formControlRange">Durée</label>
+                      <input type="range" class="form-control-range" id="formControlRange" />
                     </div>
-                  </div>
-                  <div class="actor section">
-                    <input class="form-control" id="acteur" placeholder="Acteur" />
-                  </div>
-                  <div class="during section">
-                    <form>
-                      <div class="form-group">
-                        <label for="formControlRange">Durée</label>
-                        <input type="range" class="form-control-range" id="formControlRange" />
-                      </div>
-                    </form>
-                  </div>
+                  </form>
                 </div>
               </div>
             </div>
@@ -110,21 +111,21 @@
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="one-movie-container col-12" style="display: none;">
-      <div class="one-movie-content col-10">
-        <h1>En savoir plus sur :</h1>
+  <div class="one-movie-container col-12" id="detail">
+    <div class="one-movie-content col-10">
+      <h1 id="title-detail" class="active"></h1>
+      <div class="detail-container">
+          <div id="detail-content">
 
-        <div class="one-movie-detail row">
-          <div class="detail-top col-4">
-            <div class="poster-movie">
-              <img id="picture" src="${poster === null ? posterUrlIfNull : posterUrl}" class="card-img" />
-            </div>
           </div>
-        </div>
-      </div>
+      
     </div>
-    <!-- <script src="node-modules/rater-js/index.js"> </script> -->
-    <script src="bundle.js"></script>
-  </body>
+  </div>
+  </div>
+  <!-- <script src="node-modules/rater-js/index.js"> </script> -->
+  <script src="bundle.js"></script>
+</body>
+
 </html>

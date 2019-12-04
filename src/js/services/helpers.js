@@ -3,6 +3,9 @@ import posterUrlIfNull from "../../img/film.jpg";
 
 export const convertTime = num => {
   let time = "";
+  if(num == null){
+    return time = `Inconnue`;
+  }
   if (num >= 60) {
     const fullHours = num / 60;
 
@@ -70,7 +73,7 @@ export const generateCard = (poster, title, id, date, runtime, overview, average
                       </div>
                       
                     </div>
-                    <button type="button" class="btn" onClick="viewMore()" id="plus"> Voir plus </button>
+                    <button type="button" class="btn" onClick="viewMore(${id})" id="${id}"> Voir plus </button>
                     </div>
                   
                 </div>
@@ -82,15 +85,60 @@ export const generateCard = (poster, title, id, date, runtime, overview, average
   return html;
 };
 
-export const generateHtmlDetailMovie = (poster, title, id, date, runtime, overview, average) => {
+export const generateHtmlDetailMovie = (poster, title, date, runtime, overview, average, genres, budget, countries) => {
   const urlPictureApi = "https://image.tmdb.org/t/p/original/";
-
   const datefr = new Date(date);
   const posterUrl = urlPictureApi + poster;
   const averageStarsPourcent = `${average * 10}%`;
+  let nameGenres = ""
+  genres.forEach(function(genre){
+    nameGenres += `${genre.name} `;
+  });
+  let nameCountry = ""
+  countries.forEach(function(country){
+    nameCountry += `${country.name} `;
+  });
+
+
   let html = "";
-  html = `
-      `;
+  html = `<div class="one-movie-detail row">
+            <div class="detail-top col-3">
+              <div class="poster-movie">
+                <img id="picture" src="${poster === null ? posterUrlIfNull : posterUrl}" class="card-img" />
+                
+                </div>
+
+            </div>
+            <div class="detail col-9" >
+              <h5 class="card-title">${title}</h5>
+              <p class="text-muted" id="date">${`${datefr.getDate()}/${datefr.getMonth()}/${datefr.getFullYear()} <span class="sep-date">|</span> ${runtime} `} </p>
+              <div class="stars-container">
+                    <div class="stars-grey">
+                      <i class="far fa-star"></i>
+                      <i class="far fa-star"></i>
+                      <i class="far fa-star"></i>
+                      <i class="far fa-star"></i>
+                      <i class="far fa-star"></i>
+                    
+                      <div class="stars-yellow" style="width : ${averageStarsPourcent}">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                      </div>
+                    </div>
+              </div>
+              <p class="card-text">${overview}</p>
+              <div class="secondary-detail">
+                <p>Genres : ${nameGenres}</p>
+                <p>Directeur : </p>
+                <p>Budget : ${budget}</p>
+                <p>Pays : ${nameCountry}</p>
+              </div>
+            </div>  
+          
+              `;
 
   return html;
 };
