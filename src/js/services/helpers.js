@@ -38,21 +38,22 @@ export const generateCard = (poster, title, id, date, runtime, overview, average
       <div>
         <div class="card">
           <div class="row no-gutters">
-            <div class="col-md-4">
+            <div class="col-md-3">
               <img  height="250px" id="picture" src="${poster === null ? posterUrlIfNull : posterUrl}" class="card-img">
             </div>
-              <div class="col-md-8">
+              <div class="col-md-9">
                 <div class="card-body">
                   <div class="favoris">
                     <h5 class="card-title">${title}</h5>
                     <div
                       id="${id}"
+                      class="heart-fav"
                       onClick="sessionStorage.setItem(id, id)"
                     >
                       <i id="heart" style="color: red;" class="far fa-heart"></i>
                     </div>
-                  </div>
-                  <p class="card-text" id ="section-date"><i class="fas fa-calendar-alt"></i><small class="text-muted" id="date">${`${datefr.getDate()}/${datefr.getMonth()}/${datefr.getFullYear()} <span class="sep-date">|</span> ${runtime} `} </small></p>
+                  </div>                                                                                                                                                       
+                  <p class="card-text" id ="section-date"><i class="fas fa-calendar-alt"></i><small class="text-muted" id="date">${`${datefr.getDate() < 10 ? "0" + datefr.getDate() : datefr.getDate()}/${datefr.getMonth()}/${datefr.getFullYear()} <span class="sep-date">|</span><i class="fas fa-clock"></i> ${runtime} `} </small></p>
 
                   <p class="card-text">${overview}</p>`;
 
@@ -73,7 +74,9 @@ export const generateCard = (poster, title, id, date, runtime, overview, average
                       </div>
                       
                     </div>
-                    <button type="button" class="btn" onClick="viewMore(${id})" id="${id}"> Voir plus </button>
+                    <div id="btn-more">
+                      <button type="button" class="btn" onClick="viewMore(${id})" id="${id}"> Voir plus </button>
+                    </div>
                     </div>
                   
                 </div>
@@ -105,13 +108,16 @@ export const generateHtmlDetailMovie = (poster, title, date, runtime, overview, 
             <div class="detail-top col-3">
               <div class="poster-movie">
                 <img id="picture" src="${poster === null ? posterUrlIfNull : posterUrl}" class="card-img" />
-                
                 </div>
 
             </div>
             <div class="detail col-9" >
+            <div class="title-one-movie">
               <h5 class="card-title">${title}</h5>
-              <p class="text-muted" id="date">${`${datefr.getDate()}/${datefr.getMonth()}/${datefr.getFullYear()} <span class="sep-date">|</span> ${runtime} `} </p>
+              <button type="button" id="btn-retour" class="btn" onClick="changeContent('retour')"> Retour </button>
+            </div>
+            
+              <p class="text-muted" id="section-date"><i class="fas fa-calendar-alt"></i><small class="text-muted" id="date">${`${datefr.getDate()}/${datefr.getMonth()}/${datefr.getFullYear()} <span class="sep-date">|</span><i class="fas fa-clock"></i> ${runtime} `} </small></p>
               <div class="stars-container">
                     <div class="stars-grey">
                       <i class="far fa-star"></i>
@@ -129,12 +135,13 @@ export const generateHtmlDetailMovie = (poster, title, date, runtime, overview, 
                       </div>
                     </div>
               </div>
-              <p class="card-text">${overview}</p>
+              
+              <p class="card-text"><span class="subtitle">Description: </span> ${overview}</p>
               <div class="secondary-detail">
-                <p>Genres : ${nameGenres}</p>
-                <p>Directeur : </p>
-                <p>Budget : ${budget}</p>
-                <p>Pays : ${nameCountry}</p>
+                <p><span class="subtitle">Genres: </span> ${nameGenres}</p>
+                <p><span class="subtitle">Directeur:</span></p>
+                <p><span class="subtitle">Budget: </span>${budget}</p>
+                <p><span class="subtitle">Pays: </span>${nameCountry}</p>
               </div>
             </div>  
           

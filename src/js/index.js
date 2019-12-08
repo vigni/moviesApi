@@ -67,6 +67,17 @@ getLatestMovies(results => {
   displayLatestMovies(results.results);
 });
 
+window.changeContent = function(value) {
+  if(value == "one"){
+    document.getElementById('home').classList.remove('active');
+    document.getElementById('detail').classList.add('active');
+  }
+  else{
+    document.getElementById('detail').classList.remove('active');
+    document.getElementById('home').classList.add('active');
+  }
+}
+
 window.viewMore = function(id) {
   let card = "";
   getOneMovie(id, resp => {
@@ -86,16 +97,12 @@ window.viewMore = function(id) {
       resp.spoken_languages
     );
     document.getElementById('title-detail').innerHTML = `Détails : ${resp.title}`;
-    document.getElementById("detail-content").innerHTML = card;
+    document.getElementById("detail-container").innerHTML = card;
   });
 
-  document.getElementById('home').classList.remove('active');
-  document.getElementById('detail').classList.add('active');
-
+  changeContent("one");
+  
 };
-
-
-
 
 function searchFilm(value) {
   if (value !== "") {
@@ -126,5 +133,8 @@ document.getElementById("search").onclick = () => {
   searchFilm(valueSearch);
 };
 
-
+document.getElementsByClassName("heart-fav").onclick = () => {
+  // const valueSearch = document.getEle  mentById("searchBar").value;
+  searchFilm(valueSearch);
+};
 

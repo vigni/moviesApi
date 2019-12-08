@@ -6,15 +6,38 @@ body {
   .btn:focus {
     box-shadow: none;
   }
+  .btn {
+    @include mixin-button;
+
+    &:hover {
+      @include mixin-button-hover;
+    }
+    &.active {
+      @include mixin-button-active;
+    }
+  }
   .fa-heart {
     cursor: pointer;
+  }
+  i{
+    margin-right: 5px;
+  }
+  .fa-clock{
+    margin-left:5px;
+  }
+  #date{
+    color: #00c15e !important;
+    margin-left: 5px;
+  }
+  #section-date {
+    color: $secondaryColor !important;
   }
   .stars-container {
     display: flex;
     justify-content: space-between;
     .stars-grey {
       height: 20px;
-      color: rgb(214, 214, 0);
+      color: rgb(241, 241, 1);
       position: relative;
       margin-bottom: 15px;
       // width: 26%;
@@ -23,7 +46,7 @@ body {
         position: absolute;
         height: 20px;
         top: 0;
-        color: rgb(214, 214, 0);
+        color: rgb(241, 241, 1);
       }
     }
   }
@@ -148,16 +171,7 @@ body {
     &.active{
       display: block;
     }
-    .btn {
-      @include mixin-button;
-
-      &:hover {
-        @include mixin-button-hover;
-      }
-      &.active {
-        @include mixin-button-active;
-      }
-    }
+    
     #articles {
       
       .card {
@@ -167,6 +181,8 @@ body {
 
         h5 {
           font-weight: bold;
+          font-size: 1.4em;
+
         }
         .card-body {
           height: 100%;
@@ -180,14 +196,7 @@ body {
               font-size: 20px;
             }
           }
-          #section-date {
-            color: $secondaryColor !important;
-
-            #date {
-              color: $secondaryColor !important;
-              margin-left: 5px;
-            }
-          }
+          
         }
       }
     }
@@ -273,6 +282,27 @@ body {
     display: block;
     display: flex;
     justify-content: center;
+    }
+    .one-movie-content{
+      
+      #detail-container{
+        .card-title{
+          font-size: 1.8em;
+          font-weight: bold;
+        }
+        .title-one-movie{
+          display: flex;
+          justify-content: space-between;
+        }
+        .subtitle{
+          font-weight: bold;
+          text-decoration: underline ;
+        }
+        #btn-retour{
+          padding: 5px 15px;
+          height: 35px;
+        }
+      }
     }
   }
   
