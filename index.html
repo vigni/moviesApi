@@ -38,7 +38,7 @@
           </div>
           <a href="#" class="home">Home</a>
           <div class="fav-container">
-            <a href="#" class="favorite active">Mes favoris</a>
+            <a href="#" class="favorite active" onClick="changeContent('favoris')" id="favoris-menu">Mes favoris</a>
             <i style="color: white;" class="far fa-heart"></i>
           </div>
         </div>
@@ -46,7 +46,7 @@
     </header>
   </div>
 
-  <div class="home-container col-12 active" id="home">
+  <div class="home-container col-12 active containerDisplay" id="home">
     <div class="block col-10 container">
       <h1 id="title-home" class="active">Les derniers films :</h1>
       <h1 id="title-search"></h1>
@@ -113,15 +113,24 @@
     </div>
   </div>
 
-  <div class="one-movie-container col-12" id="detail">
+  <div class="one-movie-container col-12 containerDisplay" id="detail">
     <div class="one-movie-content col-10">
       <h1 id="title-detail" class="active"></h1>
       <div id="detail-container">
-          
-      
+      </div>
     </div>
   </div>
+
+  <div class="favoris-container col-12 containerDisplay" id="favoris">
+    <div class="favoris-content col-10">
+      <h1 id="title-favoris" class="active"></h1>
+      <div id="favoris-container">
+        
+      </div>
+    </div>
   </div>
+
+</div>
   <!-- <script src="node-modules/rater-js/index.js"> </script> -->
   <script src="bundle.js"></script>
 </body>

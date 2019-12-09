@@ -3,8 +3,9 @@ import posterUrlIfNull from "../../img/film.jpg";
 
 export const convertTime = num => {
   let time = "";
-  if(num == null){
-    return time = `Inconnue`;
+  if (num == null) {
+    time = `Inconnue`;
+    return time;
   }
   if (num >= 60) {
     const fullHours = num / 60;
@@ -18,11 +19,6 @@ export const convertTime = num => {
     }
     time = `${hours}h${minutes}`;
     return time;
-  }
-  if (num != null) {
-    time = `${num} minutes`;
-  } else {
-    time = ``;
   }
   return time;
 };
@@ -46,14 +42,18 @@ export const generateCard = (poster, title, id, date, runtime, overview, average
                   <div class="favoris">
                     <h5 class="card-title">${title}</h5>
                     <div
-                      id="${id}"
                       class="heart-fav"
-                      onClick="sessionStorage.setItem(id, id)"
-                    >
-                      <i id="heart" style="color: red;" class="far fa-heart"></i>
-                    </div>
+                    >`;
+  if (Object.keys(sessionStorage).includes(id.toString())) {
+    html += `<i style="color: red;" class="fas fa-heart" id="${id}" onClick="changeHeart(${id})"></i>`;
+  } else {
+    html += `<i style="color: red;" class="far fa-heart" id="${id}" onClick="changeHeart(${id})"></i>`;
+  }
+  html += `</div>
                   </div>                                                                                                                                                       
-                  <p class="card-text" id ="section-date"><i class="fas fa-calendar-alt"></i><small class="text-muted" id="date">${`${datefr.getDate() < 10 ? "0" + datefr.getDate() : datefr.getDate()}/${datefr.getMonth()}/${datefr.getFullYear()} <span class="sep-date">|</span><i class="fas fa-clock"></i> ${runtime} `} </small></p>
+                  <p class="card-text" id ="section-date"><i class="fas fa-calendar-alt"></i><small class="text-muted" id="date">${`${
+                    datefr.getDate() < 10 ? `0${datefr.getDate()}` : datefr.getDate()
+                  }/${datefr.getMonth()}/${datefr.getFullYear()} <span class="sep-date">|</span><i class="fas fa-clock"></i> ${runtime} `} </small></p>
 
                   <p class="card-text">${overview}</p>`;
 
@@ -88,33 +88,40 @@ export const generateCard = (poster, title, id, date, runtime, overview, average
   return html;
 };
 
-export const generateHtmlDetailMovie = (poster, title, date, runtime, overview, average, genres, budget, countries) => {
+export const generateHtmlDetailsMovie = (
+  poster,
+  title,
+  date,
+  runtime,
+  overview,
+  average,
+  genres,
+  budget,
+  countries
+) => {
   const urlPictureApi = "https://image.tmdb.org/t/p/original/";
   const datefr = new Date(date);
   const posterUrl = urlPictureApi + poster;
   const averageStarsPourcent = `${average * 10}%`;
-  let nameGenres = ""
-  genres.forEach(function(genre){
+  let nameGenres = "";
+  genres.forEach(function(genre) {
     nameGenres += `${genre.name} `;
   });
-  let nameCountry = ""
-  countries.forEach(function(country){
+  let nameCountry = "";
+  countries.forEach(function(country) {
     nameCountry += `${country.name} `;
   });
-
 
   let html = "";
   html = `<div class="one-movie-detail row">
             <div class="detail-top col-3">
               <div class="poster-movie">
                 <img id="picture" src="${poster === null ? posterUrlIfNull : posterUrl}" class="card-img" />
-                </div>
-
-            </div>
+                </div> </div>
             <div class="detail col-9" >
             <div class="title-one-movie">
               <h5 class="card-title">${title}</h5>
-              <button type="button" id="btn-retour" class="btn" onClick="changeContent('retour')"> Retour </button>
+              <button type="button" id="btn-retour" class="btn" onClick="changeContent('home')"> Retour </button>
             </div>
             
               <p class="text-muted" id="section-date"><i class="fas fa-calendar-alt"></i><small class="text-muted" id="date">${`${datefr.getDate()}/${datefr.getMonth()}/${datefr.getFullYear()} <span class="sep-date">|</span><i class="fas fa-clock"></i> ${runtime} `} </small></p>

@@ -3,7 +3,7 @@ import "../scss/main.scss";
 import "bootstrap/js/src/dropdown";
 
 import getApiServices from "./services/getApiServices";
-import { convertTime, generateCard, generateHtmlDetailMovie } from "./services/helpers";
+import { convertTime, generateCard, generateHtmlDetailsMovie } from "./services/helpers";
 
 const url = "https://api.themoviedb.org/";
 const apiKey = "f3644f42368c13e65beb101e19b5849d";
@@ -36,9 +36,32 @@ const displayLatestMovies = results => {
   });
 };
 
+const displayDetailsMovie = results => {
+  let card = "";
+
+  const runtime = convertTime(results.runtime);
+  const overviewSlice = results.overview;
+
+  card += generateCard(
+    results.poster_path,
+    results.title,
+    results.release_date,
+    runtime,
+    overviewSlice,
+    results.vote_average,
+    results.genres,
+    results.budget,
+    results.spoken_languages
+  );
+  document.getElementById("title-favoris").innerHTML = `Vos favoris`;
+  document.getElementById("favoris-container").innerHTML = card;
+
+  window.changeContent("favoris");
+};
+
 const displaySearchMovies = results => {
   let card = "";
-  if (results != "") {
+  if (results !== "") {
     results.forEach(element => {
       getOneMovie(element.id, resp => {
         const runtime = convertTime(resp.runtime);
@@ -60,32 +83,28 @@ const displaySearchMovies = results => {
       });
     });
   }
-  document.getElementById("articles").innerHTML = 'Aucun résultat';
+  document.getElementById("articles").innerHTML = "Aucun résultat";
 };
 
 getLatestMovies(results => {
   displayLatestMovies(results.results);
 });
 
-window.changeContent = function(value) {
-  if(value == "one"){
-    document.getElementById('home').classList.remove('active');
-    document.getElementById('detail').classList.add('active');
-  }
-  else{
-    document.getElementById('detail').classList.remove('active');
-    document.getElementById('home').classList.add('active');
-  }
-}
+window.changeContent = function(id) {
+  const contentsToDisplay = document.getElementsByClassName("containerDisplay");
+  Object.keys(contentsToDisplay).forEach(elemKey => {
+    contentsToDisplay[elemKey].classList.remove("active");
+  });
+  document.getElementById(id).classList.add("active");
+};
 
 window.viewMore = function(id) {
   let card = "";
   getOneMovie(id, resp => {
     const runtime = convertTime(resp.runtime);
-    let overviewSlice = resp.overview;
-    
-    console.log(resp);
-    card += generateHtmlDetailMovie(
+    const overviewSlice = resp.overview;
+
+    card += generateHtmlDetailsMovie(
       resp.poster_path,
       resp.title,
       resp.release_date,
@@ -96,45 +115,55 @@ window.viewMore = function(id) {
       resp.budget,
       resp.spoken_languages
     );
-    document.getElementById('title-detail').innerHTML = `Détails : ${resp.title}`;
+    document.getElementById("title-detail").innerHTML = `Détails : ${resp.title}`;
     document.getElementById("detail-container").innerHTML = card;
   });
 
-  changeContent("one");
-  
+  window.changeContent("detail");
 };
 
 function searchFilm(value) {
   if (value !== "") {
-    document.getElementById('title-home').classList.remove('active');
-    document.getElementById('title-search').innerHTML = `Recherche : "${value}"`;
-    document.getElementById('title-search').classList.add('active');
-    
+    document.getElementById("title-home").classList.remove("active");
+    document.getElementById("title-search").innerHTML = `Recherche : "${value}"`;
+    document.getElementById("title-search").classList.add("active");
+
     getMoviesBySearch(value, results => {
       displaySearchMovies(results.results);
     });
   } else {
-    document.getElementById('title-home').classList.add('active');
-    document.getElementById('title-search').classList.remove('active');
+    document.getElementById("title-home").classList.add("active");
+    document.getElementById("title-search").classList.remove("active");
     getLatestMovies(results => {
       displayLatestMovies(results.results);
     });
   }
 }
 
-// document.getElementById("remove-icone").onclick = () => {
-//   console.log('ffdsfdsf')
-//   const valueSearch = document.getElementById("searchBar").value;
-//   console.log(valueSearch);
-// };
+window.changeHeart = function(id) {
+  const favoriteMovies = Object.keys(sessionStorage);
+  const element = document.getElementById(id);
+  if (favoriteMovies.includes(id.toString())) {
+    element.classList.remove("fas");
+    element.classList.add("far");
+    sessionStorage.removeItem(id);
+  } else {
+    element.classList.remove("far");
+    element.classList.add("fas");
+    sessionStorage.setItem(id, id);
+  }
+};
 
 document.getElementById("search").onclick = () => {
   const valueSearch = document.getElementById("searchBar").value;
   searchFilm(valueSearch);
 };
 
-document.getElementsByClassName("heart-fav").onclick = () => {
-  // const valueSearch = document.getEle  mentById("searchBar").value;
-  searchFilm(valueSearch);
+document.getElementById("favoris-menu").onclick = () => {
+  Object.keys(sessionStorage).forEach(element => {
+    console.log(element);
+    getOneMovie(element, results => {
+      displayDetailsMovie(results);
+    });
+  });
 };
-
