@@ -69,11 +69,15 @@ body {
       display: block;
     }
   }
+  .containerDisplay{
+    padding-top :80px;
+  }
   //Menu
   .header {
     width: 100%;
     background-color: $primaryColor;
-
+    position: fixed;
+    z-index: 2;
     .header-content {
       width: 100%;
       display: flex;
@@ -205,13 +209,10 @@ body {
 
       .card {
         width: 60%;
-        // position: fixed;
         height: 100%;
         box-shadow: 5px 5px 5px rgba(85, 85, 85, 0.3);
 
         .card-body {
-          // padding-top: 0;
-
           .form-control:hover {
             border: 0.5px solid $secondaryColor !important;
             box-shadow: none !important;
@@ -286,7 +287,7 @@ body {
     .one-movie-content {
       #detail-container {
         .card-title {
-          font-size: 1.8em;
+          font-size: 2em;
           font-weight: bold;
         }
         .title-one-movie {
@@ -295,7 +296,7 @@ body {
         }
         .subtitle {
           font-weight: bold;
-          text-decoration: underline;
+          font-size: 1.1em;
         }
         #btn-retour {
           padding: 5px 15px;
@@ -312,8 +313,24 @@ body {
     &.active {
       display: flex;
       opacity: 1;
-      justify-content: center;
       height: auto;
+      justify-content: center;
     }
+    #favoris-section{
+      justify-content: space-between;
+      flex-wrap: wrap;
+      display: flex;
+      .card{
+        height: 100%;
+        width: 45%;
+        margin-bottom: 35px;
+        .favoris{
+          display: flex;
+          justify-content: space-between;
+        }
+    }
+    }
+      
+    
   }
 }

@@ -31,7 +31,7 @@ export const generateCard = (poster, title, id, date, runtime, overview, average
   const averageStarsPourcent = `${average * 10}%`;
   let html = "";
   html = `
-      <div>
+      
         <div class="card">
           <div class="row no-gutters">
             <div class="col-md-3">
@@ -83,7 +83,7 @@ export const generateCard = (poster, title, id, date, runtime, overview, average
               </div>
             </div>
           </div>
-        </div>`;
+        `;
 
   return html;
 };

@@ -36,25 +36,28 @@ const displayLatestMovies = results => {
   });
 };
 
-const displayDetailsMovie = results => {
+const displayFavoritesMovies = results => {
   let card = "";
-
-  const runtime = convertTime(results.runtime);
-  const overviewSlice = results.overview;
-
-  card += generateCard(
-    results.poster_path,
-    results.title,
-    results.release_date,
-    runtime,
-    overviewSlice,
-    results.vote_average,
-    results.genres,
-    results.budget,
-    results.spoken_languages
-  );
-  document.getElementById("title-favoris").innerHTML = `Vos favoris`;
-  document.getElementById("favoris-container").innerHTML = card;
+  results.forEach(element => {
+    getOneMovie(element, resp => {
+      const runtime = convertTime(resp.runtime);
+      let overviewSlice = resp.overview;
+      if (overviewSlice.length > 199) {
+        overviewSlice = `${resp.overview.slice(0, 80)}...`;
+      }
+      console.log(resp)
+      card += generateCard(
+        resp.poster_path,
+        resp.title,
+        resp.release_date,
+        runtime,
+        overviewSlice,
+        resp.vote_average,
+      );
+      document.getElementById("favoris-section").innerHTML = card;
+    })    
+  });
+  document.getElementById("title-favoris").innerHTML = `Vos films favoris :`;
 
   window.changeContent("favoris");
 };
@@ -160,10 +163,5 @@ document.getElementById("search").onclick = () => {
 };
 
 document.getElementById("favoris-menu").onclick = () => {
-  Object.keys(sessionStorage).forEach(element => {
-    console.log(element);
-    getOneMovie(element, results => {
-      displayDetailsMovie(results);
-    });
-  });
+  displayFavoritesMovies(Object.keys(sessionStorage))
 };
