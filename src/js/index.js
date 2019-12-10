@@ -38,28 +38,32 @@ const displayLatestMovies = results => {
 
 const displayFavoritesMovies = results => {
   let card = "";
-  results.forEach(element => {
-    getOneMovie(element, resp => {
-      const runtime = convertTime(resp.runtime);
-      let overviewSlice = resp.overview;
-      if (overviewSlice.length > 199) {
-        overviewSlice = `${resp.overview.slice(0, 80)}...`;
-      }
-      console.log(resp)
-      card += generateCard(
-        resp.poster_path,
-        resp.title,
-        resp.release_date,
-        runtime,
-        overviewSlice,
-        resp.vote_average,
-      );
-      document.getElementById("favoris-section").innerHTML = card;
-    })    
-  });
-  document.getElementById("title-favoris").innerHTML = `Vos films favoris :`;
-
-  window.changeContent("favoris");
+  if (results !== "") {
+    results.forEach(element => {
+      getOneMovie(element, resp => {
+        const runtime = convertTime(resp.runtime);
+        let overviewSlice = resp.overview;
+        if (overviewSlice.length > 199) {
+          overviewSlice = `${resp.overview.slice(0, 80)}...`;
+        }
+        console.log(resp.release_date);
+        card += generateCard(
+          resp.poster_path,
+          resp.title,
+          resp.id,
+          resp.release_date,
+          runtime,
+          overviewSlice,
+          resp.vote_average,
+          "favorite"
+        );
+        document.getElementById("favoris-section").innerHTML = card;
+      });
+    });
+    document.getElementById("title-favoris").innerHTML = `Vos films favoris :`;
+    window.changeContent("favoris");
+  }
+  document.getElementById("favoris-section").innerHTML = "Vous n'avez pas de favoris &#128577";
 };
 
 const displaySearchMovies = results => {
@@ -125,7 +129,8 @@ window.viewMore = function(id) {
   window.changeContent("detail");
 };
 
-function searchFilm(value) {
+const searchMovie = () => {
+  const value = document.getElementById("searchBar").value;
   if (value !== "") {
     document.getElementById("title-home").classList.remove("active");
     document.getElementById("title-search").innerHTML = `Recherche : "${value}"`;
@@ -141,7 +146,7 @@ function searchFilm(value) {
       displayLatestMovies(results.results);
     });
   }
-}
+};
 
 window.changeHeart = function(id) {
   const favoriteMovies = Object.keys(sessionStorage);
@@ -155,13 +160,13 @@ window.changeHeart = function(id) {
     element.classList.add("fas");
     sessionStorage.setItem(id, id);
   }
+  console.log(element.classList);
 };
 
 document.getElementById("search").onclick = () => {
-  const valueSearch = document.getElementById("searchBar").value;
-  searchFilm(valueSearch);
+  searchMovie();
 };
 
 document.getElementById("favoris-menu").onclick = () => {
-  displayFavoritesMovies(Object.keys(sessionStorage))
+  displayFavoritesMovies(Object.keys(sessionStorage));
 };

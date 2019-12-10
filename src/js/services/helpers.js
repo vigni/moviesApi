@@ -23,7 +23,7 @@ export const convertTime = num => {
   return time;
 };
 
-export const generateCard = (poster, title, id, date, runtime, overview, average) => {
+export const generateCard = (poster, title, id, date, runtime, overview, average, provenance) => {
   const urlPictureApi = "https://image.tmdb.org/t/p/original/";
 
   const datefr = new Date(date);
@@ -44,11 +44,14 @@ export const generateCard = (poster, title, id, date, runtime, overview, average
                     <div
                       class="heart-fav"
                     >`;
-  if (Object.keys(sessionStorage).includes(id.toString())) {
+  if (provenance === "favorite") {
+    html += `<i style="color:red" onClick="changeHeart(${id})" class="fas fa-trash"></i>`;
+  } else if (Object.keys(sessionStorage).includes(id.toString())) {
     html += `<i style="color: red;" class="fas fa-heart" id="${id}" onClick="changeHeart(${id})"></i>`;
   } else {
     html += `<i style="color: red;" class="far fa-heart" id="${id}" onClick="changeHeart(${id})"></i>`;
   }
+
   html += `</div>
                   </div>                                                                                                                                                       
                   <p class="card-text" id ="section-date"><i class="fas fa-calendar-alt"></i><small class="text-muted" id="date">${`${
