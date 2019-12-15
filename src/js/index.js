@@ -46,7 +46,6 @@ const displayFavoritesMovies = results => {
         if (overviewSlice.length > 199) {
           overviewSlice = `${resp.overview.slice(0, 80)}...`;
         }
-        console.log(resp.release_date);
         card += generateCard(
           resp.poster_path,
           resp.title,
@@ -100,6 +99,7 @@ getLatestMovies(results => {
 window.changeContent = function(id) {
   const contentsToDisplay = document.getElementsByClassName("containerDisplay");
   Object.keys(contentsToDisplay).forEach(elemKey => {
+    console.log(contentsToDisplay[elemKey])
     contentsToDisplay[elemKey].classList.remove("active");
   });
   document.getElementById(id).classList.add("active");
@@ -130,6 +130,9 @@ window.viewMore = function(id) {
 };
 
 const searchMovie = () => {
+  if(document.getElementById("favoris").classList.contains("active") || document.getElementById("detail").classList.contains("active")){
+    window.changeContent("home");
+  }
   const value = document.getElementById("searchBar").value;
   if (value !== "") {
     document.getElementById("title-home").classList.remove("active");
@@ -146,6 +149,7 @@ const searchMovie = () => {
       displayLatestMovies(results.results);
     });
   }
+  
 };
 
 window.changeHeart = function(id) {
@@ -160,8 +164,19 @@ window.changeHeart = function(id) {
     element.classList.add("fas");
     sessionStorage.setItem(id, id);
   }
-  console.log(element.classList);
 };
+window.deleteFavorite = function(id) {
+  const favoriteMovies = Object.keys(sessionStorage);
+  const element = document.getElementById(id);
+  if (favoriteMovies.includes(id.toString())) {
+    sessionStorage.removeItem(id);
+  } else {
+    sessionStorage.setItem(id, id);
+  }
+  displayFavoritesMovies(Object.keys(sessionStorage))
+};
+
+
 
 document.getElementById("search").onclick = () => {
   searchMovie();
@@ -169,4 +184,42 @@ document.getElementById("search").onclick = () => {
 
 document.getElementById("favoris-menu").onclick = () => {
   displayFavoritesMovies(Object.keys(sessionStorage));
-};
+}; 
+
+const getCheckedbox = () => {
+  const checkbox = document.getElementsByClassName("checkbox");
+  // console.log(checkbox.length);
+  for (let index = 0; index < checkbox.length; index++) {
+    if(checkbox[index].checked == true){
+      console.log(checkbox[index])
+    }
+    
+  }
+}
+
+window.addEventListener("click",() => getCheckedbox())
+
+// const whenScrollIsAtBottom = callback => {
+//   let canRun = true;
+
+//   window.addEventListener(
+//     "scroll",
+//     () => {
+//       if (
+//         window.innerHeight + window.scrollY >= document.body.offsetHeight &&
+//         typeof callback === "function" &&
+//         canRun
+//       ) {
+//         callback();
+//         canRun = false;
+
+//         setTimeout(() => {
+//           canRun = true;
+//         }, 1000);
+//       }
+//     },
+//     false
+//   );
+// };
+
+// whenScrollIsAtBottom(loadMore);

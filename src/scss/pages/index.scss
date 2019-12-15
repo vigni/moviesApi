@@ -3,6 +3,32 @@ body {
   a:link {
     text-decoration: none;
   }
+  .loader {
+    margin: 30px auto;
+    height: 30px;
+    width: 60px;
+    justify-content: space-between;
+    display: flex;
+    
+    .round {
+      height: 15px;
+      width: 15px;
+      border-radius: 100%;
+      background: $secondaryColor;
+    }
+  
+    .round1 {
+      animation: loaderRound1 1s ease infinite;
+    }
+  
+    .round2 {
+      animation: loaderRound2 1s ease infinite;
+    }
+  
+    .round3 {
+      animation: loaderRound3 1s ease infinite;
+    }
+  }
   .btn:focus {
     box-shadow: none;
   }
@@ -251,7 +277,7 @@ body {
         .kind {
           .list {
             margin-top: 15px;
-            height: 90px;
+            height: 120px;
             overflow: auto;
 
             input[type="checkbox"] {
@@ -323,7 +349,10 @@ body {
         height: 100%;
         width: 45%;
         margin-bottom: 35px;
-        .trash {
+        &.inactif{
+          display:none;
+        }
+        .fa-trash {
           cursor: pointer;
         }
         .favoris {

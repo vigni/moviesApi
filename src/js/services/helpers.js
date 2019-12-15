@@ -45,7 +45,7 @@ export const generateCard = (poster, title, id, date, runtime, overview, average
                       class="heart-fav"
                     >`;
   if (provenance === "favorite") {
-    html += `<i style="color:red" onClick="changeHeart(${id})" class="fas fa-trash"></i>`;
+    html += `<i style="color:red" onClick="deleteFavorite(${id})" class="fas fa-trash"></i>`;
   } else if (Object.keys(sessionStorage).includes(id.toString())) {
     html += `<i style="color: red;" class="fas fa-heart" id="${id}" onClick="changeHeart(${id})"></i>`;
   } else {
