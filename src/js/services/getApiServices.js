@@ -13,7 +13,6 @@ const getApiServices = (url, apiKey) => ({
     const request = axios.get(
       `${url}3/discover/movie?api_key=${apiKey}&language=fr-FR&sort_by=release_date.desc&include_adult=false&include_video=false&page=1&release_date.lte=${fullDate}&with_original_language=fr`
     );
-
     request.then(({ data: results }) => callback(results));
   },
   
@@ -22,13 +21,38 @@ const getApiServices = (url, apiKey) => ({
       `${url}3/search/movie?api_key=${apiKey}&language=fr-FR&query=${search}&page=1&include_adult=false`
       );
     request.then(({ data }) => callback(data));
+  },
+
+  getMoviesBySearchByTypes(types,search, callback ) {
+    const date = new Date();
+    const fullDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate() < 10 ? "0" : ""}${date.getDate()}`;
+    const request = axios.get(
+      `${url}3/search/movie?api_key=${apiKey}&language=fr-FR&query=${search}&page=1&include_adult=false&with_genres=${types}`
+    );
+    request.then(({ data: results }) => callback(results));
+  },
+
+  getLatestMoviesByTypes(types, callback ) {
+    const date = new Date();
+    const fullDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate() < 10 ? "0" : ""}${date.getDate()}`;
+    const request = axios.get(
+      `${url}3/discover/movie?api_key=${apiKey}&language=fr-FR&sort_by=release_date.desc&include_adult=false&include_video=false&page=1&release_date.lte=${fullDate}&with_genres=${types}`
+    );
+    request.then(({ data: results }) => callback(results));
+  },
+
+  
+
+  getTypes(callback) {
+    const request = axios.get(
+      `${url}3/genre/movie/list?api_key=${apiKey}&language=fr-FR`
+      
+      );
+    request.then(({ data }) => callback(data));
   }
-  // getMoviesBySearch(search, callback) {
-  //   const request = axios.get(
-  //     `${url}3/search/movie?api_key=${apiKey}&language=fr-FR&query=${search}&page=1&include_adult=false`
-  //     );
-  //   request.then(({ data }) => callback(data));
-  // }
+
+  
+  
 });
 
 export default getApiServices;

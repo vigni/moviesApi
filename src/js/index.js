@@ -11,6 +11,9 @@ const apiKey = "f3644f42368c13e65beb101e19b5849d";
 const { getLatestMovies } = getApiServices(url, apiKey);
 const { getOneMovie } = getApiServices(url, apiKey);
 const { getMoviesBySearch } = getApiServices(url, apiKey);
+const { getTypes } = getApiServices(url, apiKey);
+const { getLatestMoviesByTypes } = getApiServices(url, apiKey);
+const { getMoviesBySearchByTypes } = getApiServices(url, apiKey);
 
 const displayLatestMovies = results => {
   let card = "";
@@ -35,6 +38,7 @@ const displayLatestMovies = results => {
     });
   });
 };
+
 
 const displayFavoritesMovies = results => {
   let card = "";
@@ -96,16 +100,15 @@ getLatestMovies(results => {
   displayLatestMovies(results.results);
 });
 
-window.changeContent = function(id) {
+window.changeContent = function (id) {
   const contentsToDisplay = document.getElementsByClassName("containerDisplay");
   Object.keys(contentsToDisplay).forEach(elemKey => {
-    console.log(contentsToDisplay[elemKey])
     contentsToDisplay[elemKey].classList.remove("active");
   });
   document.getElementById(id).classList.add("active");
 };
 
-window.viewMore = function(id) {
+window.viewMore = function (id) {
   let card = "";
   getOneMovie(id, resp => {
     const runtime = convertTime(resp.runtime);
@@ -130,7 +133,7 @@ window.viewMore = function(id) {
 };
 
 const searchMovie = () => {
-  if(document.getElementById("favoris").classList.contains("active") || document.getElementById("detail").classList.contains("active")){
+  if (document.getElementById("favoris").classList.contains("active") || document.getElementById("detail").classList.contains("active")) {
     window.changeContent("home");
   }
   const value = document.getElementById("searchBar").value;
@@ -149,10 +152,10 @@ const searchMovie = () => {
       displayLatestMovies(results.results);
     });
   }
-  
+
 };
 
-window.changeHeart = function(id) {
+window.changeHeart = function (id) {
   const favoriteMovies = Object.keys(sessionStorage);
   const element = document.getElementById(id);
   if (favoriteMovies.includes(id.toString())) {
@@ -165,7 +168,7 @@ window.changeHeart = function(id) {
     sessionStorage.setItem(id, id);
   }
 };
-window.deleteFavorite = function(id) {
+window.deleteFavorite = function (id) {
   const favoriteMovies = Object.keys(sessionStorage);
   const element = document.getElementById(id);
   if (favoriteMovies.includes(id.toString())) {
@@ -184,20 +187,78 @@ document.getElementById("search").onclick = () => {
 
 document.getElementById("favoris-menu").onclick = () => {
   displayFavoritesMovies(Object.keys(sessionStorage));
-}; 
+};
 
-const getCheckedbox = () => {
+const getCheckbox = () => {
+  let nameChecked = [];
   const checkbox = document.getElementsByClassName("checkbox");
-  // console.log(checkbox.length);
   for (let index = 0; index < checkbox.length; index++) {
-    if(checkbox[index].checked == true){
-      console.log(checkbox[index])
+    if (checkbox[index].checked == true) {
+      nameChecked.push(checkbox[index].getAttribute('id'));
     }
-    
   }
+
+  return nameChecked;
+}
+const orderByTypes = () => {
+  let nameChecked = getCheckbox();
+  let idChecked = "";
+  const titleHome = document.getElementById("title-home");
+  const titleSearch = document.getElementById("title-search");
+
+
+  getTypes(results => {
+    results.genres.forEach(element => {
+
+      if (nameChecked.indexOf(element.name) != "-1") {
+        idChecked += `%2C${element.id}`
+      }
+
+    })
+    if (titleHome.classList.contains("active")) {
+      if (idChecked != "") {
+        idChecked = idChecked.substr(3)
+        getLatestMoviesByTypes(idChecked, results => {
+          displayLatestMovies(results.results)
+        })
+      }
+      else {
+        getLatestMovies(results => {
+          displayLatestMovies(results.results)
+        })
+      }
+    }
+    if (titleSearch.classList.contains("active")) {
+      const value = document.getElementById("searchBar").value;
+      if (idChecked != "") {
+
+        getMoviesBySearchByTypes(idChecked, value, results => {
+          console.log(results.results)
+          displaySearchMovies(results.results);
+        });
+      }
+      else {
+        getMoviesBySearch(value, results => {
+          displaySearchMovies(results.results);
+        });
+      }
+    }
+
+
+  })
 }
 
-window.addEventListener("click",() => getCheckedbox())
+window.displayYears = function (value) {
+  const tagElement = document.getElementById("tag");
+  const newTag = document.createElement("span");
+  newTag.innerHTML = value;
+  tagElement.appendChild(newTag);
+}
+
+const kind = document.getElementById("kind");
+kind.addEventListener("click", () => orderByTypes())
+
+
 
 // const whenScrollIsAtBottom = callback => {
 //   let canRun = true;

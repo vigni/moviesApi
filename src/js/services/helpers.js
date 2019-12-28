@@ -3,9 +3,8 @@ import posterUrlIfNull from "../../img/film.jpg";
 
 export const convertTime = num => {
   let time = "";
-  if (num == null) {
-    time = `Inconnue`;
-    return time;
+  if (num == '0') {
+    return `Inconnu`;
   }
   if (num >= 60) {
     const fullHours = num / 60;
@@ -18,14 +17,17 @@ export const convertTime = num => {
       minutes = `0${minutes}`;
     }
     time = `${hours}h${minutes}`;
-    return time;
+     
   }
+  else{
+    time = `${num} mins`
+  }
+  
   return time;
 };
 
 export const generateCard = (poster, title, id, date, runtime, overview, average, provenance) => {
   const urlPictureApi = "https://image.tmdb.org/t/p/original/";
-
   const datefr = new Date(date);
   const posterUrl = urlPictureApi + poster;
   const averageStarsPourcent = `${average * 10}%`;
@@ -56,7 +58,7 @@ export const generateCard = (poster, title, id, date, runtime, overview, average
                   </div>                                                                                                                                                       
                   <p class="card-text" id ="section-date"><i class="fas fa-calendar-alt"></i><small class="text-muted" id="date">${`${
                     datefr.getDate() < 10 ? `0${datefr.getDate()}` : datefr.getDate()
-                  }/${datefr.getMonth()}/${datefr.getFullYear()} <span class="sep-date">|</span><i class="fas fa-clock"></i> ${runtime} `} </small></p>
+                  }/${datefr.getMonth() < 10 ? `0${datefr.getMonth()}` : datefr.getMonth()}/${datefr.getFullYear()} <span class="sep-date">|</span><i class="fas fa-clock"></i> ${runtime} `} </small></p>
 
                   <p class="card-text">${overview}</p>`;
 
@@ -104,6 +106,7 @@ export const generateHtmlDetailsMovie = (
 ) => {
   const urlPictureApi = "https://image.tmdb.org/t/p/original/";
   const datefr = new Date(date);
+  
   const posterUrl = urlPictureApi + poster;
   const averageStarsPourcent = `${average * 10}%`;
   let nameGenres = "";

@@ -77,91 +77,96 @@
                 </div>
 
                 <div class="year section">
-                  <input class="form-control" id="year" placeholder="Année" />
+                  <label for="Action">Année :</label>
+                  <input onKeyPress="if (event.keyCode == 13) displayYears(this.value)" class="form-control" id="year" />
+                  <div id="tag">
+
+                  </div>
                 </div>
-                <div class="kind section">
+                <div class="kind section" id="kind">
                   <span class="title">Genre :</span>
                   <div class="list">
                     <div>
-                      <input type="checkbox" class="checkbox" id="action" name="action" />
-                      <label for="action">Action</label>
+                      <input type="checkbox" class="checkbox" id="Action" name="action" />
+                      <label for="Action">Action</label>
                     </div>
 
                     <div>
                       <input type="checkbox" class="checkbox" id="Aventure" name="adventure" />
-                      <label for="adventure">Aventure</label>
+                      <label for="Aventure">Aventure</label>
                     </div>
                     <div>
-                      <input type="checkbox" class="checkbox" id="animation" name="animation" />
-                      <label for="animation">Animation</label>
+                      <input type="checkbox" class="checkbox" id="Animation" name="animation" />
+                      <label for="Animation">Animation</label>
                     </div>
                     <div>
-                      <input type="checkbox" class="checkbox" id="comedie" name="comedie" />
-                      <label for="comedie">Comédie</label>
+                      <input type="checkbox" class="checkbox" id="Comedie" name="comedie" />
+                      <label for="Comedie">Comédie</label>
                     </div>
                     <div>
-                      <input type="checkbox" class="checkbox" id="crime" name="crime" />
-                      <label for="crime">Crime</label>
+                      <input type="checkbox" class="checkbox" id="Crime" name="crime" />
+                      <label for="Crime">Crime</label>
                     </div>
                     <div>
-                      <input type="checkbox" class="checkbox" id="documentaire" name="documentaire" />
-                      <label for="documentaire">Documentaire</label>
+                      <input type="checkbox" class="checkbox" id="Documentaire" name="documentaire" />
+                      <label for="Documentaire">Documentaire</label>
                     </div>
                     <div>
-                      <input type="checkbox" class="checkbox" id="drame" name="drame" />
-                      <label for="drame">Drame</label>
+                      <input type="checkbox" class="checkbox" id="Drame" name="drame" />
+                      <label for="Drame">Drame</label>
                     </div>
                     <div>
-                      <input type="checkbox" class="checkbox" id="familial" name="familial" />
-                      <label for="familial">Familial</label>
+                      <input type="checkbox" class="checkbox" id="Familial" name="familial" />
+                      <label for="Familial">Familial</label>
                     </div>
                     <div>
-                      <input type="checkbox" class="checkbox" id="fantastique" name="fantastique" />
-                      <label for="fantastique">Fantastique</label>
+                      <input type="checkbox" class="checkbox" id="Fantastique" name="fantastique" />
+                      <label for="Fantastique">Fantastique</label>
                     </div>
                     <div>
-                      <input type="checkbox" class="checkbox" id="histoire" name="histoire" />
-                      <label for="histoire">Histoire</label>
+                      <input type="checkbox" class="checkbox" id="Histoire" name="histoire" />
+                      <label for="Histoire">Histoire</label>
                     </div>
                     <div>
-                      <input type="checkbox" class="checkbox" id="horreur" name="horreur" />
-                      <label for="horreur">Horreur</label>
+                      <input type="checkbox" class="checkbox" id="Horreur" name="horreur" />
+                      <label for="Horreur">Horreur</label>
                     </div>
                     <div>
-                      <input type="checkbox" class="checkbox" id="musique" name="musique" />
-                      <label for="musique">Musique</label>
+                      <input type="checkbox" class="checkbox" id="Musique" name="musique" />
+                      <label for="Musique">Musique</label>
                     </div>
                     <div>
-                      <input type="checkbox" class="checkbox" id="mystère" name="mystère" />
-                      <label for="mystère">Mystère</label>
+                      <input type="checkbox" class="checkbox" id="Mystère" name="mystère" />
+                      <label for="Mystère">Mystère</label>
                     </div>
                     <div>
-                      <input type="checkbox" class="checkbox" id="romance" name="romance" />
-                      <label for="romance">Romance</label>
+                      <input type="checkbox" class="checkbox" id="Romance" name="romance" />
+                      <label for="Romance">Romance</label>
                     </div>
                     <div>
-                      <input type="checkbox" class="checkbox" id="science-Fiction" name="science-Fiction" />
-                      <label for="science-Fiction">Science-Fiction</label>
+                      <input type="checkbox" class="checkbox" id="Science-Fiction" name="science-Fiction" />
+                      <label for="Science-Fiction">Science-Fiction</label>
                     </div>
                     <div>
-                      <input type="checkbox" class="checkbox" id="telefilm" name="telefilm" />
-                      <label for="telefilm">Téléfilm</label>
+                      <input type="checkbox" class="checkbox" id="Telefilm" name="telefilm" />
+                      <label for="Telefilm">Téléfilm</label>
                     </div>
                     <div>
-                      <input type="checkbox" class="checkbox" id="thriller" name="thriller" />
-                      <label for="thriller">Thriller</label>
+                      <input type="checkbox" class="checkbox" id="Thriller" name="thriller" />
+                      <label for="Thriller">Thriller</label>
                     </div>
                     <div>
-                      <input type="checkbox" class="checkbox" id="guerre" name="guerre" />
-                      <label for="guerre">Guerre</label>
+                      <input type="checkbox" class="checkbox" id="Guerre" name="guerre" />
+                      <label for="Guerre">Guerre</label>
                     </div>
                     <div>
-                      <input type="checkbox" class="checkbox" id="western" name="western" />
-                      <label for="western">Western</label>
+                      <input type="checkbox" class="checkbox" id="Western" name="western" />
+                      <label for="Western">Western</label>
                     </div>
                   </div>
                 </div>
                 <div class="actor section">
+                  <label for="Action">Acteur :</label>
                   <input class="form-control" id="acteur" placeholder="Acteur" />
                 </div>
                 <div class="during section">
