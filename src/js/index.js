@@ -12,7 +12,6 @@ const { getLatestMovies } = getApiServices(url, apiKey);
 const { getOneMovie } = getApiServices(url, apiKey);
 const { getMoviesBySearch } = getApiServices(url, apiKey);
 const { getTypes } = getApiServices(url, apiKey);
-const { getLatestMoviesByTypes } = getApiServices(url, apiKey);
 const { getMoviesBySearchByTypes } = getApiServices(url, apiKey);
 
 const displayLatestMovies = results => {
@@ -96,7 +95,8 @@ const displaySearchMovies = results => {
   document.getElementById("articles").innerHTML = "Aucun résultat";
 };
 
-getLatestMovies(results => {
+getLatestMovies('', results => {
+  console.log(results)
   displayLatestMovies(results.results);
 });
 
@@ -200,13 +200,13 @@ const getCheckbox = () => {
 
   return nameChecked;
 }
-const orderByTypes = () => {
+const orderBy = (year) => {
   let nameChecked = getCheckbox();
   let idChecked = "";
   const titleHome = document.getElementById("title-home");
   const titleSearch = document.getElementById("title-search");
-
-
+  
+  console.log(year)
   getTypes(results => {
     results.genres.forEach(element => {
 
@@ -218,12 +218,12 @@ const orderByTypes = () => {
     if (titleHome.classList.contains("active")) {
       if (idChecked != "") {
         idChecked = idChecked.substr(3)
-        getLatestMoviesByTypes(idChecked, results => {
+        getLatestMovies(idChecked, results => {
           displayLatestMovies(results.results)
         })
       }
       else {
-        getLatestMovies(results => {
+        getLatestMovies('', results => {
           displayLatestMovies(results.results)
         })
       }
@@ -248,15 +248,40 @@ const orderByTypes = () => {
   })
 }
 
+window.removeTag = function (element) {
+  element.parentNode.remove();
+}
+
 window.displayYears = function (value) {
-  const tagElement = document.getElementById("tag");
-  const newTag = document.createElement("span");
-  newTag.innerHTML = value;
-  tagElement.appendChild(newTag);
+  document.getElementById("year").value = "";
+  const tagElement = document.getElementById("tag-section");
+  if(Number.isInteger(parseInt(value)))
+  {
+    document.getElementById("year").placeholder = ""
+    const newTag = document.createElement("span");
+    newTag.className = "tag";
+    newTag.innerHTML = `${value}<i class="fas fa-times" onClick="removeTag(this)"></i>`;
+    tagElement.appendChild(newTag);
+
+    const allTags = document.getElementsByClassName("tag");
+    // if(allTags.length > 0)
+    // {
+    // Object.keys(allTags).forEach(elem => {
+    //   console.log(allTags[elem])
+    //   allTags[elem].classList.remove("active");
+    //   });
+    // }
+    console.log(allTags)
+    orderBy(allTags)
+  }
+  else{
+    document.getElementById("year").placeholder = "Nombre attendu (ex: 2008)"
+
+  }
 }
 
 const kind = document.getElementById("kind");
-kind.addEventListener("click", () => orderByTypes())
+kind.addEventListener("click", () => orderBy())
 
 
 

@@ -263,7 +263,7 @@ body {
             border-color: $secondaryColor;
           }
         }
-
+        
         &.active {
           display: block;
           opacity: 1;
@@ -272,6 +272,34 @@ body {
           padding-top: 20px;
           border-bottom: solid 2px $secondaryColor;
           padding-bottom: 30px;
+        }
+        .year{
+          ::placeholder{
+            color: rgba(255, 0, 0, 0.747);
+          }
+          input{
+            margin-bottom: 15px;
+          }
+          #tag-section {
+            
+            span{
+              border: 1px solid $secondaryColor;
+              color: $primaryColor;
+              border-radius: 10%;
+              padding: 4px 9px;
+              margin-right: 10px;
+              .fa-times{
+                color: $secondaryColor;
+                margin-left: 5px;
+                cursor: pointer;
+              }
+              
+            }
+            
+          }
+        }
+        .year.section{
+          padding-bottom : 15px !important;
         }
 
         .kind {
