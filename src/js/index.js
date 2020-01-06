@@ -200,13 +200,14 @@ const getCheckbox = () => {
 
   return nameChecked;
 }
-const orderBy = (year) => {
+const orderBy = (yearsSpan) => {
   let nameChecked = getCheckbox();
   let idChecked = "";
   const titleHome = document.getElementById("title-home");
   const titleSearch = document.getElementById("title-search");
-  
-  console.log(year)
+
+  let years = [];
+
   getTypes(results => {
     results.genres.forEach(element => {
 
@@ -228,24 +229,32 @@ const orderBy = (year) => {
         })
       }
     }
-    if (titleSearch.classList.contains("active")) {
-      const value = document.getElementById("searchBar").value;
-      if (idChecked != "") {
+    // if (titleSearch.classList.contains("active")) {
+    //   const value = document.getElementById("searchBar").value;
+    //   if (idChecked != "") {
 
-        getMoviesBySearchByTypes(idChecked, value, results => {
-          console.log(results.results)
-          displaySearchMovies(results.results);
-        });
-      }
-      else {
-        getMoviesBySearch(value, results => {
-          displaySearchMovies(results.results);
-        });
-      }
-    }
-
-
+    //     getMoviesBySearchByTypes(idChecked, value, results => {
+    //       displaySearchMovies(results.results);
+    //     });
+    //   }
+    //   else {
+    //     getMoviesBySearch(value, results => {
+    //       displaySearchMovies(results.results);
+    //     });
+    //   }
+    // }
   })
+  if(yearsSpan != undefined)
+  {
+    if (yearsSpan.length > 0) {
+      Object.keys(yearsSpan).forEach(elem => {
+        years.push(yearsSpan[elem].textContent)
+      });
+    }
+  }
+    
+
+  console.log(years)
 }
 
 window.removeTag = function (element) {
@@ -255,8 +264,7 @@ window.removeTag = function (element) {
 window.displayYears = function (value) {
   document.getElementById("year").value = "";
   const tagElement = document.getElementById("tag-section");
-  if(Number.isInteger(parseInt(value)))
-  {
+  if (Number.isInteger(parseInt(value))) {
     document.getElementById("year").placeholder = ""
     const newTag = document.createElement("span");
     newTag.className = "tag";
@@ -264,17 +272,10 @@ window.displayYears = function (value) {
     tagElement.appendChild(newTag);
 
     const allTags = document.getElementsByClassName("tag");
-    // if(allTags.length > 0)
-    // {
-    // Object.keys(allTags).forEach(elem => {
-    //   console.log(allTags[elem])
-    //   allTags[elem].classList.remove("active");
-    //   });
-    // }
-    console.log(allTags)
+
     orderBy(allTags)
   }
-  else{
+  else {
     document.getElementById("year").placeholder = "Nombre attendu (ex: 2008)"
 
   }
