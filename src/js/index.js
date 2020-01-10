@@ -12,6 +12,7 @@ const { getLatestMovies } = getApiServices(url, apiKey);
 const { getOneMovie } = getApiServices(url, apiKey);
 const { getMoviesBySearch } = getApiServices(url, apiKey);
 const { getTypes } = getApiServices(url, apiKey);
+const { getSearchPeoples } = getApiServices(url, apiKey);
 const { getMoviesBySearchByTypes } = getApiServices(url, apiKey);
 
 const displayLatestMovies = results => {
@@ -96,7 +97,6 @@ const displaySearchMovies = results => {
 };
 
 getLatestMovies('', results => {
-  console.log(results)
   displayLatestMovies(results.results);
 });
 
@@ -148,7 +148,7 @@ const searchMovie = () => {
   } else {
     document.getElementById("title-home").classList.add("active");
     document.getElementById("title-search").classList.remove("active");
-    getLatestMovies(results => {
+    getLatestMovies('', results => {
       displayLatestMovies(results.results);
     });
   }
@@ -200,85 +200,117 @@ const getCheckbox = () => {
 
   return nameChecked;
 }
-const orderBy = (yearsSpan) => {
+const orderBy = (yearsSpan, actor) => {
   let nameChecked = getCheckbox();
   let idChecked = "";
   const titleHome = document.getElementById("title-home");
-  const titleSearch = document.getElementById("title-search");
 
   let years = [];
 
-  getTypes(results => {
-    results.genres.forEach(element => {
 
-      if (nameChecked.indexOf(element.name) != "-1") {
-        idChecked += `%2C${element.id}`
+  if (nameChecked.length != 0 && actor != undefined) {
+    console.log("ffqs")
+  }
+  if (actor != undefined) {
+    getSearchPeoples(actor, results => {
+      if(results.total_results === 0)
+      {
+        document.getElementById("acteur").placeholder = "Introuvable";
+        removeTag(document.getElementById("tag"))
       }
-
+      
+      displayLatestMovies(results.results[0].known_for)
     })
-    if (titleHome.classList.contains("active")) {
-      if (idChecked != "") {
-        idChecked = idChecked.substr(3)
-        getLatestMovies(idChecked, results => {
-          displayLatestMovies(results.results)
-        })
-      }
-      else {
-        getLatestMovies('', results => {
-          displayLatestMovies(results.results)
-        })
-      }
-    }
-    // if (titleSearch.classList.contains("active")) {
-    //   const value = document.getElementById("searchBar").value;
-    //   if (idChecked != "") {
+  }
+  else {
+    getTypes(results => {
+      results.genres.forEach(element => {
 
-    //     getMoviesBySearchByTypes(idChecked, value, results => {
-    //       displaySearchMovies(results.results);
-    //     });
-    //   }
-    //   else {
-    //     getMoviesBySearch(value, results => {
-    //       displaySearchMovies(results.results);
-    //     });
-    //   }
-    // }
-  })
-  if(yearsSpan != undefined)
-  {
+        if (nameChecked.indexOf(element.name) != "-1") {
+          idChecked += `%2C${element.id}`
+        }
+
+      })
+      if (titleHome.classList.contains("active")) {
+        if (idChecked != "") {
+          idChecked = idChecked.substr(3)
+          getLatestMovies(idChecked, results => {
+            displayLatestMovies(results.results)
+          })
+        }
+        else {
+          getLatestMovies('', results => {
+            displayLatestMovies(results.results)
+          })
+        }
+      }
+      // if (titleSearch.classList.contains("active")) {
+      //   const value = document.getElementById("searchBar").value;
+      //   if (idChecked != "") {
+
+      //     getMoviesBySearchByTypes(idChecked, value, results => {
+      //       displaySearchMovies(results.results);
+      //     });
+      //   }
+      //   else {
+      //     getMoviesBySearch(value, results => {
+      //       displaySearchMovies(results.results);
+      //     });
+      //   }
+      // }
+    })
+  }
+
+  if (yearsSpan != undefined) {
     if (yearsSpan.length > 0) {
       Object.keys(yearsSpan).forEach(elem => {
         years.push(yearsSpan[elem].textContent)
       });
     }
   }
-    
 
-  console.log(years)
+
 }
 
 window.removeTag = function (element) {
   element.parentNode.remove();
 }
 
-window.displayYears = function (value) {
-  document.getElementById("year").value = "";
+window.displayActors = function (value) {
+  document.getElementById("acteur").value = "";
+  document.getElementById("acteur").placeholder= "";
   const tagElement = document.getElementById("tag-section");
-  if (Number.isInteger(parseInt(value))) {
-    document.getElementById("year").placeholder = ""
-    const newTag = document.createElement("span");
-    newTag.className = "tag";
-    newTag.innerHTML = `${value}<i class="fas fa-times" onClick="removeTag(this)"></i>`;
-    tagElement.appendChild(newTag);
 
-    const allTags = document.getElementsByClassName("tag");
+  const tag = document.getElementById("tag");
+  console.log(!isNaN(value))
+  if (!isNaN(value)) {
 
-    orderBy(allTags)
+    document.getElementById("acteur").placeholder = "Chaine attendu (ex: Omar Sy)"
+
   }
   else {
-    document.getElementById("year").placeholder = "Nombre attendu (ex: 2008)"
+    // document.getElementById("acteur").placeholder = ""
+    if (tag == null){
+      const newTag = document.createElement("span");
+      newTag.id = "tag";
+      newTag.innerHTML = `${value}<i class="fas fa-times" onClick="removeTag(this)"></i>`;
+      tagElement.appendChild(newTag);
+  
+      let actor = value.replace(" ", "%20")
 
+      orderBy("", actor)
+    }
+    else{
+      tag.innerHTML = `${value}<i class="fas fa-times" onClick="removeTag(this)"></i>`;
+      let actor = value.replace(" ", "%20")
+      console.log(actor)
+      orderBy("", actor)
+    }
+    
+
+    
   }
+
 }
 
 const kind = document.getElementById("kind");

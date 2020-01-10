@@ -1,8 +1,8 @@
 // eslint-disable-next-line import/prefer-default-export
 import posterUrlIfNull from "../../img/film.png";
 
-export const formatDateForApi = date => {
-  var d = new Date(date),
+export const formatDateForApi = () => {
+    var d = new Date(),
     month = '' + (d.getMonth() + 1),
     day = '' + d.getDate(),
     year = d.getFullYear();
@@ -17,7 +17,7 @@ export const formatDateForApi = date => {
 
 export const convertTime = num => {
   let time = "";
-  if (num == '0') {
+  if (num == '0' || num == null) {
     return `Inconnu`;
   }
   if (num >= 60) {

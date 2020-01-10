@@ -269,11 +269,11 @@ body {
           opacity: 1;
         }
         .section {
-          padding-top: 20px;
+          padding-top: 15px;
           border-bottom: solid 2px $secondaryColor;
-          padding-bottom: 30px;
+          padding-bottom: 20px;
         }
-        .year{
+        .actor{
           ::placeholder{
             color: rgba(255, 0, 0, 0.747);
           }
@@ -298,7 +298,7 @@ body {
             
           }
         }
-        .year.section{
+        .actor.section{
           padding-bottom : 15px !important;
         }
 

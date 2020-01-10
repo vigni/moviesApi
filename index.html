@@ -64,7 +64,7 @@
           <div class="card">
             <div class="card-body">
               <div id="body-filter" class="active">
-                <div class="dropdown">
+                <!-- <div class="dropdown">
                   <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
                     Trier par
@@ -74,14 +74,11 @@
                     <a class="dropdown-item" href="#">Durée</a>
                     <a class="dropdown-item" href="#">Pertinence</a>
                   </div>
-                </div>
+                </div> -->
 
                 <div class="year section">
                   <label for="Action">Année :</label>
                   <input onKeyPress="if (event.keyCode == 13) displayYears(this.value)" class="form-control" id="year" />
-                  <div id="tag-section">
-
-                  </div>
                 </div>
                 <div class="kind section" id="kind">
                   <span class="title">Genre :</span>
@@ -167,7 +164,10 @@
                 </div>
                 <div class="actor section">
                   <label for="Action">Acteur :</label>
-                  <input class="form-control" id="acteur" placeholder="Acteur" />
+                  <input onKeyPress="if (event.keyCode == 13) displayActors(this.value)" class="form-control" id="acteur"/>
+                  <div id="tag-section">
+                    
+                  </div>
                 </div>
                 <div class="during section">
                   <form>

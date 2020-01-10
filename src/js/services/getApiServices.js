@@ -9,8 +9,7 @@ const getApiServices = (url, apiKey) => ({
   },
 
   getLatestMovies(types, callback) {
-    const date = new Date();
-    const fullDate = formatDateForApi(date)
+    const fullDate = formatDateForApi()
     const request = axios.get(
       `${url}3/discover/movie?api_key=${apiKey}&language=fr-FR&sort_by=release_date.desc&include_adult=false&include_video=false&page=1&release_date.lte=${fullDate}&with_original_language=fr&with_genres=${types}`
     );
@@ -34,6 +33,14 @@ const getApiServices = (url, apiKey) => ({
   getTypes(callback) {
     const request = axios.get(
       `${url}3/genre/movie/list?api_key=${apiKey}&language=fr-FR`
+
+    );
+    request.then(({ data }) => callback(data));
+  },
+
+  getSearchPeoples(search, callback) {
+    const request = axios.get(
+      `${url}3/search/multi?api_key=${apiKey}&language=fr-FR&query=${search}&page=1&include_adult=false`
 
     );
     request.then(({ data }) => callback(data));
