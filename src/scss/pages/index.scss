@@ -254,16 +254,6 @@ body {
         display: none;
         opacity: 0;
         transition: 1s ease-in-out;
-        .dropdown {
-          width: 50%;
-          .dropdown-toggle {
-            width: 100%;
-            background-color: $secondaryColor;
-            color: white;
-            border-color: $secondaryColor;
-          }
-        }
-        
         &.active {
           display: block;
           opacity: 1;
@@ -272,6 +262,17 @@ body {
           padding-top: 15px;
           border-bottom: solid 2px $secondaryColor;
           padding-bottom: 20px;
+        }
+        .year{
+          #dropdown-years{
+            border-radius: 5px;
+            margin-left: 5px;
+            padding: 3px;
+          }
+          :focus{
+            outline: none !important;
+            border-color: $secondaryColor;
+          }
         }
         .actor{
           ::placeholder{

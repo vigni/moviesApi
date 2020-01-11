@@ -40,7 +40,7 @@ const getApiServices = (url, apiKey) => ({
 
   getSearchPeoples(search, callback) {
     const request = axios.get(
-      `${url}3/search/multi?api_key=${apiKey}&language=fr-FR&query=${search}&page=1&include_adult=false`
+      `${url}3/search/person?api_key=${apiKey}&language=fr-FR&query=${search}&page=1&include_adult=false`
 
     );
     request.then(({ data }) => callback(data));

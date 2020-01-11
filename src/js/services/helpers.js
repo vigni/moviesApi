@@ -2,7 +2,7 @@
 import posterUrlIfNull from "../../img/film.png";
 
 export const formatDateForApi = () => {
-    var d = new Date(),
+    let d = new Date(),
     month = '' + (d.getMonth() + 1),
     day = '' + d.getDate(),
     year = d.getFullYear();
@@ -13,6 +13,19 @@ export const formatDateForApi = () => {
     day = '0' + day;
 
   return [year, month, day].join('-');
+}
+
+export const feedDropDownYears = () => {
+  const min = 1874;
+  const max = new Date().getFullYear();
+  const select = document.getElementById('dropdown-years');
+
+    for (let i = max; i>=min; i--){
+       const opt = document.createElement('option');
+       opt.value = i;
+       opt.innerHTML = i;
+       select.appendChild(opt);
+    }
 }
 
 export const convertTime = num => {

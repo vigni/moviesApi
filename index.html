@@ -26,7 +26,7 @@
             <!-- <i id="remove-icone" class="fas fa-times fa-2x"></i> -->
 
             <div class="input-group md-form form-sm form-2 pl-0">
-              <input onkeypress="document.getElementById('search').click()" class="form-control my-0 py-1 lime-border" type="text" placeholder="Rechercher un film..."
+              <input onkeypress="if (event.keyCode == 13) document.getElementById('search').click()" class="form-control my-0 py-1 lime-border" type="text" placeholder="Rechercher un film..."
                 aria-label="Search" id="searchBar">
 
               <div class="input-group-append">
@@ -78,7 +78,7 @@
 
                 <div class="year section">
                   <label for="Action">Année :</label>
-                  <input onKeyPress="if (event.keyCode == 13) displayYears(this.value)" class="form-control" id="year" />
+                  <select id="dropdown-years"></select>
                 </div>
                 <div class="kind section" id="kind">
                   <span class="title">Genre :</span>
@@ -205,6 +205,7 @@
 </div>
   <!-- <script src="node-modules/rater-js/index.js"> </script> -->
   <script src="bundle.js"></script>
+
 </body>
 
 </html>
