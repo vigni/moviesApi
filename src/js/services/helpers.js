@@ -53,12 +53,14 @@ export const convertTime = num => {
   return time;
 };
 
-export const generateCard = (poster, title, id, date, runtime, overview, average, provenance) => {
+export const generateCard = (poster, title, id, date, runtime, overview, average, provenance, actor) => {
   const urlPictureApi = "https://image.tmdb.org/t/p/original/";
-  const datefr = new Date(date);
+  let datefr = new Date(date);
   const posterUrl = urlPictureApi + poster;
   const averageStarsPourcent = `${average * 10}%`;
   let html = "";
+  
+  
   html = `
       
         <div class="card">
@@ -69,8 +71,9 @@ export const generateCard = (poster, title, id, date, runtime, overview, average
               <div class="col-md-9">
                 <div class="card-body">
                   <div class="favoris">
-                    <h5 class="card-title">${title}</h5>
-                    <div
+                    <h5 class="card-title">${title}</h5>`
+                    
+                    html += `<div
                       class="heart-fav"
                     >`;
   if (provenance === "favorite") {
@@ -82,13 +85,23 @@ export const generateCard = (poster, title, id, date, runtime, overview, average
   }
 
   html += `</div>
-                  </div>                                                                                                                                                       
-                  <p class="card-text" id ="section-date"><i class="fas fa-calendar-alt"></i><small class="text-muted" id="date">${`${
-                    datefr.getDate() < 10 ? `0${datefr.getDate()}` : datefr.getDate()
-                  }/${datefr.getMonth() < 10 ? `0${datefr.getMonth()}` : datefr.getMonth()}/${datefr.getFullYear()} <span class="sep-date">|</span><i class="fas fa-clock"></i> ${runtime} `} </small></p>
+                  </div>`       
+                  if(!isNaN(datefr))
+                  {
+                    html += `<p class="card-text" id ="section-date"><i class="fas fa-calendar-alt"></i><small class="text-muted" id="date">${`${ datefr.getDate() < 10 ? `0${datefr.getDate()}` : datefr.getDate() }/${datefr.getMonth() < 10 ? `0${datefr.getMonth()}` : datefr.getMonth()}/${datefr.getFullYear()} <span class="sep-date">|</span><i class="fas fa-clock"></i> ${runtime} `} </small></p>`
 
-                  <p class="card-text">${overview}</p>`;
+                  }
+                  else
+                  {
+                    html += `<p class="card-text" id ="section-date"><i class="fas fa-calendar-alt"></i><small class="text-muted" id="date">${` Inconue <span class="sep-date">|</span><i class="fas fa-clock"></i> ${runtime} `} </small></p>`
 
+                    
+                  }
+                  html += `<p class="card-text">${overview}</p>`;
+                  if( actor != undefined)
+                  {
+                    html +=  `<p style="text-decoration: underline"class="card-actor">${actor}</p>`
+                  }
   html += `<div class="stars-container">
                     <div class="stars-grey">
                       <i class="far fa-star"></i>

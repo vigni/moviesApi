@@ -41,28 +41,39 @@ const displayLatestMovies = results => {
 const displayPeopleMovies = results => {
   let card = "";
   let actor;
+  let title;
   results.forEach(element => {
+    
     actor = element.name;
-    console.log(actor)
+    
     element.known_for.forEach(elem => {
-      getOneMovie(elem.id, resp => {
-        const runtime = convertTime(resp.runtime);
+      console.log(actor)
+      
+      // getOneMovie(elem.id, resp => {
+        
+        console.log(elem); 
+        const runtime = convertTime(elem.runtime);
         let overviewSlice = elem.overview;
         if (overviewSlice.length > 199) {
           overviewSlice = `${elem.overview.slice(0, 80)}...`;
         }
+        title = elem.title == undefined ? elem.original_name : elem.title
+        
         card += generateCard(
-          resp.poster_path,
-          resp.title,
-          resp.id,
-          resp.release_date,
+          elem.poster_path,
+          title,
+          elem.id,
+          elem.release_date,
           runtime,
           overviewSlice,
-          resp.vote_average,
+          elem.vote_average,
+          "",
+          actor
         );
   
         document.getElementById("articles").innerHTML = card;
-      });
+      // });
+
     });
       
   });
@@ -248,12 +259,8 @@ const orderBy = (yearsSpan, actor) => {
       if(results.total_results === 0)
       {
         document.getElementById("acteur").placeholder = "Acteur introuvable";
-        // removeTag(document.getElementById("tag"))
       }
-      // Object.keys(results.results).forEach(elem => {
-      //   console.log(results.results[elem].known_for)
-      //   movies += results.results[elem].known_for
-      // });
+      
       displayPeopleMovies(results.results)
     })
   }
@@ -340,9 +347,6 @@ window.displayActors = function (value) {
       let actor = value.replace(" ", "%20")
       orderBy("", actor)
     }
-    
-
-    
   }
 
 }
