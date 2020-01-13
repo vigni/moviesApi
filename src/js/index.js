@@ -3,7 +3,9 @@ import "../scss/main.scss";
 import "bootstrap/js/src/dropdown";
 
 import getApiServices from "./services/getApiServices";
-import { convertTime, generateCard, generateHtmlDetailsMovie, feedDropDownYears } from "./services/helpers";
+import { convertTime, feedDropDownYears } from "./services/helpers";
+import { generateCard, generateHtmlDetailsMovie } from "./services/generateHtml";
+
 
 const url = "https://api.themoviedb.org/";
 const apiKey = "f3644f42368c13e65beb101e19b5849d";
@@ -17,24 +19,24 @@ const displayLatestMovies = results => {
   let card = "";
   results.forEach(element => {
 
-      getOneMovie(element.id, resp => {
-        const runtime = convertTime(resp.runtime);
-        let overviewSlice = element.overview;
-        if (overviewSlice.length > 199) {
-          overviewSlice = `${element.overview.slice(0, 80)}...`;
-        }
-        card += generateCard(
-          resp.poster_path,
-          resp.title,
-          resp.id,
-          resp.release_date,
-          runtime,
-          overviewSlice,
-          resp.vote_average
-        );
-  
-        document.getElementById("articles").innerHTML = card;
-      });
+    getOneMovie(element.id, resp => {
+      const runtime = convertTime(resp.runtime);
+      let overviewSlice = element.overview;
+      if (overviewSlice.length > 199) {
+        overviewSlice = `${element.overview.slice(0, 80)}...`;
+      }
+      card += generateCard(
+        resp.poster_path,
+        resp.title,
+        resp.id,
+        resp.release_date,
+        runtime,
+        overviewSlice,
+        resp.vote_average
+      );
+
+      document.getElementById("articles").innerHTML = card;
+    });
   });
 };
 
@@ -43,39 +45,37 @@ const displayPeopleMovies = results => {
   let actor;
   let title;
   results.forEach(element => {
-    
+
     actor = element.name;
-    
+
     element.known_for.forEach(elem => {
-      console.log(actor)
-      
+
       // getOneMovie(elem.id, resp => {
-        
-        console.log(elem); 
-        const runtime = convertTime(elem.runtime);
-        let overviewSlice = elem.overview;
-        if (overviewSlice.length > 199) {
-          overviewSlice = `${elem.overview.slice(0, 80)}...`;
-        }
-        title = elem.title == undefined ? elem.original_name : elem.title
-        
-        card += generateCard(
-          elem.poster_path,
-          title,
-          elem.id,
-          elem.release_date,
-          runtime,
-          overviewSlice,
-          elem.vote_average,
-          "",
-          actor
-        );
-  
-        document.getElementById("articles").innerHTML = card;
+
+      const runtime = convertTime(elem.runtime);
+      let overviewSlice = elem.overview;
+      if (overviewSlice.length > 199) {
+        overviewSlice = `${elem.overview.slice(0, 80)}...`;
+      }
+      title = elem.title == undefined ? elem.original_name : elem.title
+
+      card += generateCard(
+        elem.poster_path,
+        title,
+        elem.id,
+        elem.release_date,
+        runtime,
+        overviewSlice,
+        elem.vote_average,
+        "",
+        actor
+      );
+
+      document.getElementById("articles").innerHTML = card;
       // });
 
     });
-      
+
   });
 };
 
@@ -135,10 +135,7 @@ const displaySearchMovies = results => {
   document.getElementById("articles").innerHTML = "Aucun résultat";
 };
 
-feedDropDownYears();
-getLatestMovies('', results => {
-  displayLatestMovies(results.results);
-});
+
 
 
 
@@ -242,6 +239,7 @@ const getCheckbox = () => {
 
   return nameChecked;
 }
+
 const orderBy = (yearsSpan, actor) => {
   let nameChecked = getCheckbox();
   let idChecked = "";
@@ -256,11 +254,10 @@ const orderBy = (yearsSpan, actor) => {
   if (actor != undefined) {
 
     getSearchPeoples(actor, results => {
-      if(results.total_results === 0)
-      {
+      if (results.total_results === 0) {
         document.getElementById("acteur").placeholder = "Acteur introuvable";
       }
-      
+
       displayPeopleMovies(results.results)
     })
   }
@@ -312,45 +309,68 @@ const orderBy = (yearsSpan, actor) => {
   }
 }
 
-window.removeTag = function (element) {
-  element.parentNode.remove();
-  getLatestMovies('', results => {
-    displayLatestMovies(results.results)
-  })
+const removeTag = (element) => {
+  if (element.getAttribute('id') == "cross-tag" || element.parentNode.getAttribute('id') == "cross-tag" ) {
+    console.log(document.getElementById('tag'))
+    document.getElementById('tag').remove();
+    getLatestMovies('', results => {
+      displayLatestMovies(results.results)
+    })
+  }
+
 }
 
-window.displayActors = function (value) {
+const displayTagToOrder = (value) => {
   document.getElementById("acteur").value = "";
   document.getElementById("acteur").placeholder = "";
   const tagElement = document.getElementById("tag-section");
-
   const tag = document.getElementById("tag");
   if (!isNaN(value)) {
-
     document.getElementById("acteur").placeholder = "Chaine attendu (ex: Omar Sy)"
-
   }
   else {
     // document.getElementById("acteur").placeholder = ""
-    if (tag == null){
+    if (tag == null) {
       const newTag = document.createElement("span");
       newTag.id = "tag";
-      newTag.innerHTML = `${value}<i class="fas fa-times" onClick="removeTag(this)"></i>`;
+      newTag.innerHTML = `${value}<i class="fas fa-times" id="cross-tag"></i>`;
       tagElement.appendChild(newTag);
-  
       let actor = value.replace(" ", "%20")
-
       orderBy("", actor)
     }
-    else{
-      tag.innerHTML = `${value}<i class="fas fa-times" onClick="removeTag(this)"></i>`;
+    else {
+      tag.innerHTML = `${value}<i class="fas fa-times" id="cross-tag"></i>`;
       let actor = value.replace(" ", "%20")
       orderBy("", actor)
     }
   }
-
 }
 
+feedDropDownYears();
+
+getLatestMovies('', results => {
+  displayLatestMovies(results.results);
+});
+
+//-------------
+//Event listener 
+//-------------
+// when enter is PRESS to filter by actor
+const actorLabel = document.getElementById("acteur");
+actorLabel.addEventListener("keypress", (e) => {
+  if (e.key === 'Enter') {
+    displayTagToOrder(actorLabel.value);
+  }
+})
+
+// when CLICK on cross to remove actor tag
+const actorSection = document.getElementById("actor-section");
+
+actorSection.addEventListener("click", (event) => {
+  console.log(event.target)
+  removeTag(event.target);
+})
+// when CLICK on kind checkbox to filter by
 const kind = document.getElementById("kind");
 kind.addEventListener("click", () => orderBy())
 
