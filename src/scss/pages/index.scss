@@ -9,22 +9,22 @@ body {
     width: 60px;
     justify-content: space-between;
     display: flex;
-    
+
     .round {
       height: 15px;
       width: 15px;
       border-radius: 100%;
       background: $secondaryColor;
     }
-  
+
     .round1 {
       animation: loaderRound1 1s ease infinite;
     }
-  
+
     .round2 {
       animation: loaderRound2 1s ease infinite;
     }
-  
+
     .round3 {
       animation: loaderRound3 1s ease infinite;
     }
@@ -263,44 +263,41 @@ body {
           border-bottom: solid 2px $secondaryColor;
           padding-bottom: 20px;
         }
-        .year{
-          #dropdown-years{
+        .year {
+          #dropdown-years {
             border-radius: 5px;
             margin-left: 5px;
             padding: 3px;
           }
-          :focus{
+          :focus {
             outline: none !important;
             border-color: $secondaryColor;
           }
         }
-        .actor{
-          ::placeholder{
+        .actor {
+          ::placeholder {
             color: rgba(255, 0, 0, 0.747);
           }
-          input{
+          input {
             margin-bottom: 15px;
           }
           #tag-section {
-            
-            span{
+            span {
               border: 1px solid $secondaryColor;
               color: $primaryColor;
               border-radius: 10%;
               padding: 4px 9px;
               margin-right: 10px;
-              .fa-times{
+              .fa-times {
                 color: $secondaryColor;
                 margin-left: 5px;
                 cursor: pointer;
               }
-              
             }
-            
           }
         }
-        .actor.section{
-          padding-bottom : 15px !important;
+        .actor.section {
+          padding-bottom: 15px !important;
         }
 
         .kind {
@@ -345,6 +342,13 @@ body {
         .title-one-movie {
           display: flex;
           justify-content: space-between;
+          .title-heart {
+            display: flex;
+            .fa-heart {
+              margin-left: 5px;
+              font-size: 20px;
+            }
+          }
         }
         .subtitle {
           font-weight: bold;
@@ -378,8 +382,8 @@ body {
         height: 100%;
         width: 45%;
         margin-bottom: 35px;
-        &.inactif{
-          display:none;
+        &.inactif {
+          display: none;
         }
         .fa-trash {
           cursor: pointer;

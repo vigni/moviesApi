@@ -6,7 +6,6 @@ import getApiServices from "./services/getApiServices";
 import { convertTime, feedDropDownYears } from "./services/helpers";
 import { generateCard, generateHtmlDetailsMovie } from "./services/generateHtml";
 
-
 const url = "https://api.themoviedb.org/";
 const apiKey = "f3644f42368c13e65beb101e19b5849d";
 const { getLatestMovies } = getApiServices(url, apiKey);
@@ -18,7 +17,6 @@ const { getSearchPeoples } = getApiServices(url, apiKey);
 const displayLatestMovies = results => {
   let card = "";
   results.forEach(element => {
-
     getOneMovie(element.id, resp => {
       const runtime = convertTime(resp.runtime);
       let overviewSlice = element.overview;
@@ -45,11 +43,9 @@ const displayPeopleMovies = results => {
   let actor;
   let title;
   results.forEach(element => {
-
     actor = element.name;
 
     element.known_for.forEach(elem => {
-
       // getOneMovie(elem.id, resp => {
 
       const runtime = convertTime(elem.runtime);
@@ -57,7 +53,7 @@ const displayPeopleMovies = results => {
       if (overviewSlice.length > 199) {
         overviewSlice = `${elem.overview.slice(0, 80)}...`;
       }
-      title = elem.title == undefined ? elem.original_name : elem.title
+      title = elem.title == undefined ? elem.original_name : elem.title;
 
       card += generateCard(
         elem.poster_path,
@@ -73,9 +69,7 @@ const displayPeopleMovies = results => {
 
       document.getElementById("articles").innerHTML = card;
       // });
-
     });
-
   });
 };
 
@@ -135,11 +129,7 @@ const displaySearchMovies = results => {
   document.getElementById("articles").innerHTML = "Aucun résultat";
 };
 
-
-
-
-
-window.changeContent = function (id) {
+window.changeContent = function(id) {
   const contentsToDisplay = document.getElementsByClassName("containerDisplay");
   Object.keys(contentsToDisplay).forEach(elemKey => {
     contentsToDisplay[elemKey].classList.remove("active");
@@ -147,7 +137,7 @@ window.changeContent = function (id) {
   document.getElementById(id).classList.add("active");
 };
 
-window.viewMore = function (id) {
+window.viewMore = function(id) {
   let card = "";
   getOneMovie(id, resp => {
     const runtime = convertTime(resp.runtime);
@@ -162,7 +152,8 @@ window.viewMore = function (id) {
       resp.vote_average,
       resp.genres,
       resp.budget,
-      resp.spoken_languages
+      resp.spoken_languages,
+      id
     );
     document.getElementById("title-detail").innerHTML = `Détails : ${resp.title}`;
     document.getElementById("detail-container").innerHTML = card;
@@ -172,7 +163,10 @@ window.viewMore = function (id) {
 };
 
 const searchMovie = () => {
-  if (document.getElementById("favoris").classList.contains("active") || document.getElementById("detail").classList.contains("active")) {
+  if (
+    document.getElementById("favoris").classList.contains("active") ||
+    document.getElementById("detail").classList.contains("active")
+  ) {
     window.changeContent("home");
   }
   const value = document.getElementById("searchBar").value;
@@ -187,27 +181,39 @@ const searchMovie = () => {
   } else {
     document.getElementById("title-home").classList.add("active");
     document.getElementById("title-search").classList.remove("active");
-    getLatestMovies('', results => {
+    getLatestMovies("", results => {
       displayLatestMovies(results.results);
     });
   }
-
 };
 
-window.changeHeart = function (id) {
+window.changeHeart = function(id) {
   const favoriteMovies = Object.keys(sessionStorage);
   const element = document.getElementById(id);
+  const elementBis = document.getElementById(`${id}-detail`);
+
   if (favoriteMovies.includes(id.toString())) {
     element.classList.remove("fas");
     element.classList.add("far");
+    if (elementBis != null) {
+      elementBis.classList.remove("fas");
+      elementBis.classList.add("far");
+    }
+
     sessionStorage.removeItem(id);
   } else {
+    if (elementBis != null) {
+      elementBis.classList.remove("far");
+      elementBis.classList.add("fas");
+    }
     element.classList.remove("far");
     element.classList.add("fas");
+
     sessionStorage.setItem(id, id);
   }
 };
-window.deleteFavorite = function (id) {
+
+window.deleteFavorite = function(id) {
   const favoriteMovies = Object.keys(sessionStorage);
   const element = document.getElementById(id);
   if (favoriteMovies.includes(id.toString())) {
@@ -215,10 +221,8 @@ window.deleteFavorite = function (id) {
   } else {
     sessionStorage.setItem(id, id);
   }
-  displayFavoritesMovies(Object.keys(sessionStorage))
+  displayFavoritesMovies(Object.keys(sessionStorage));
 };
-
-
 
 document.getElementById("search").onclick = () => {
   searchMovie();
@@ -233,12 +237,12 @@ const getCheckbox = () => {
   const checkbox = document.getElementsByClassName("checkbox");
   for (let index = 0; index < checkbox.length; index++) {
     if (checkbox[index].checked == true) {
-      nameChecked.push(checkbox[index].getAttribute('id'));
+      nameChecked.push(checkbox[index].getAttribute("id"));
     }
   }
 
   return nameChecked;
-}
+};
 
 const orderBy = (yearsSpan, actor) => {
   let nameChecked = getCheckbox();
@@ -247,40 +251,34 @@ const orderBy = (yearsSpan, actor) => {
   let movies = [];
   let years = [];
 
-
   if (nameChecked.length != 0 && actor != undefined) {
-    console.log("ffqs")
+    console.log("ffqs");
   }
   if (actor != undefined) {
-
     getSearchPeoples(actor, results => {
       if (results.total_results === 0) {
         document.getElementById("acteur").placeholder = "Acteur introuvable";
       }
 
-      displayPeopleMovies(results.results)
-    })
-  }
-  else {
+      displayPeopleMovies(results.results);
+    });
+  } else {
     getTypes(results => {
       results.genres.forEach(element => {
-
         if (nameChecked.indexOf(element.name) != "-1") {
-          idChecked += `%2C${element.id}`
+          idChecked += `%2C${element.id}`;
         }
-
-      })
+      });
       if (titleHome.classList.contains("active")) {
         if (idChecked != "") {
-          idChecked = idChecked.substr(3)
+          idChecked = idChecked.substr(3);
           getLatestMovies(idChecked, results => {
-            displayLatestMovies(results.results)
-          })
-        }
-        else {
-          getLatestMovies('', results => {
-            displayLatestMovies(results.results)
-          })
+            displayLatestMovies(results.results);
+          });
+        } else {
+          getLatestMovies("", results => {
+            displayLatestMovies(results.results);
+          });
         }
       }
       // if (titleSearch.classList.contains("active")) {
@@ -297,84 +295,92 @@ const orderBy = (yearsSpan, actor) => {
       //     });
       //   }
       // }
-    })
+    });
   }
 
   if (yearsSpan != undefined) {
     if (yearsSpan.length > 0) {
       Object.keys(yearsSpan).forEach(elem => {
-        years.push(yearsSpan[elem].textContent)
+        years.push(yearsSpan[elem].textContent);
       });
     }
   }
-}
+};
 
-const removeTag = (element) => {
-  if (element.getAttribute('id') == "cross-tag" || element.parentNode.getAttribute('id') == "cross-tag" ) {
-    console.log(document.getElementById('tag'))
-    document.getElementById('tag').remove();
-    getLatestMovies('', results => {
-      displayLatestMovies(results.results)
-    })
+const removeTag = element => {
+  if (element.getAttribute("id") == "cross-tag" || element.parentNode.getAttribute("id") == "cross-tag") {
+    console.log(document.getElementById("tag"));
+    document.getElementById("tag").remove();
+    getLatestMovies("", results => {
+      displayLatestMovies(results.results);
+    });
   }
+};
 
-}
-
-const displayTagToOrder = (value) => {
+const displayTagToOrder = value => {
   document.getElementById("acteur").value = "";
   document.getElementById("acteur").placeholder = "";
   const tagElement = document.getElementById("tag-section");
   const tag = document.getElementById("tag");
   if (!isNaN(value)) {
-    document.getElementById("acteur").placeholder = "Chaine attendu (ex: Omar Sy)"
-  }
-  else {
+    document.getElementById("acteur").placeholder = "Chaine attendu (ex: Omar Sy)";
+  } else {
     // document.getElementById("acteur").placeholder = ""
     if (tag == null) {
       const newTag = document.createElement("span");
       newTag.id = "tag";
       newTag.innerHTML = `${value}<i class="fas fa-times" id="cross-tag"></i>`;
       tagElement.appendChild(newTag);
-      let actor = value.replace(" ", "%20")
-      orderBy("", actor)
-    }
-    else {
+      let actor = value.replace(" ", "%20");
+      orderBy("", actor);
+    } else {
       tag.innerHTML = `${value}<i class="fas fa-times" id="cross-tag"></i>`;
-      let actor = value.replace(" ", "%20")
-      orderBy("", actor)
+      let actor = value.replace(" ", "%20");
+      orderBy("", actor);
     }
   }
-}
+};
 
 feedDropDownYears();
 
-getLatestMovies('', results => {
+getLatestMovies("", results => {
   displayLatestMovies(results.results);
 });
 
 //-------------
-//Event listener 
+//Event listener
 //-------------
 // when enter is PRESS to filter by actor
 const actorLabel = document.getElementById("acteur");
-actorLabel.addEventListener("keypress", (e) => {
-  if (e.key === 'Enter') {
+actorLabel.addEventListener("keypress", e => {
+  if (e.key === "Enter") {
     displayTagToOrder(actorLabel.value);
   }
-})
+});
 
 // when CLICK on cross to remove actor tag
 const actorSection = document.getElementById("actor-section");
 
-actorSection.addEventListener("click", (event) => {
-  console.log(event.target)
+actorSection.addEventListener("click", event => {
   removeTag(event.target);
-})
+});
+
 // when CLICK on kind checkbox to filter by
 const kind = document.getElementById("kind");
-kind.addEventListener("click", () => orderBy())
+kind.addEventListener("click", () => orderBy());
 
+// when dropdown of year is change to filter by
+const dropdownYear = document.getElementById("dropdown-years");
+dropdownYear.addEventListener("change", event => {
+  const value = event.target.value;
+  console.log(value);
+});
 
+const timeRange = document.getElementById("formControlRange");
+timeRange.addEventListener("change", event => {
+  const value = event.target.value;
+  console.log(value);
+});
 
 // const whenScrollIsAtBottom = callback => {
 //   let canRun = true;
