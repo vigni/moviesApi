@@ -13,7 +13,7 @@ const { getOneMovie } = getApiServices(url, apiKey);
 const { getMoviesBySearch } = getApiServices(url, apiKey);
 const { getTypes } = getApiServices(url, apiKey);
 const { getSearchPeoples } = getApiServices(url, apiKey);
-
+const { getPopularByYear } = getApiServices(url, apiKey);
 const displayLatestMovies = results => {
   let card = "";
   results.forEach(element => {
@@ -181,7 +181,7 @@ const searchMovie = () => {
   } else {
     document.getElementById("title-home").classList.add("active");
     document.getElementById("title-search").classList.remove("active");
-    getLatestMovies("", results => {
+    getLatestMovies("", "", results => {
       displayLatestMovies(results.results);
     });
   }
@@ -244,12 +244,10 @@ const getCheckbox = () => {
   return nameChecked;
 };
 
-const orderBy = (yearsSpan, actor) => {
-  let nameChecked = getCheckbox();
+const orderBy = (year, actor) => {
+  const nameChecked = getCheckbox();
   let idChecked = "";
   const titleHome = document.getElementById("title-home");
-  let movies = [];
-  let years = [];
 
   if (nameChecked.length != 0 && actor != undefined) {
     console.log("ffqs");
@@ -270,13 +268,13 @@ const orderBy = (yearsSpan, actor) => {
         }
       });
       if (titleHome.classList.contains("active")) {
-        if (idChecked != "") {
+        if (idChecked !== "") {
           idChecked = idChecked.substr(3);
-          getLatestMovies(idChecked, results => {
+          getLatestMovies("", idChecked, results => {
             displayLatestMovies(results.results);
           });
         } else {
-          getLatestMovies("", results => {
+          getLatestMovies("", "", results => {
             displayLatestMovies(results.results);
           });
         }
@@ -298,20 +296,18 @@ const orderBy = (yearsSpan, actor) => {
     });
   }
 
-  if (yearsSpan != undefined) {
-    if (yearsSpan.length > 0) {
-      Object.keys(yearsSpan).forEach(elem => {
-        years.push(yearsSpan[elem].textContent);
-      });
-    }
+  if (year !== "") {
+    getPopularByYear(year, results => {
+      displayLatestMovies(results.results);
+    });
   }
 };
 
 const removeTag = element => {
-  if (element.getAttribute("id") == "cross-tag" || element.parentNode.getAttribute("id") == "cross-tag") {
+  if (element.getAttribute("id") === "cross-tag" || element.parentNode.getAttribute("id") === "cross-tag") {
     console.log(document.getElementById("tag"));
     document.getElementById("tag").remove();
-    getLatestMovies("", results => {
+    getLatestMovies("", "", results => {
       displayLatestMovies(results.results);
     });
   }
@@ -320,35 +316,35 @@ const removeTag = element => {
 const displayTagToOrder = value => {
   document.getElementById("acteur").value = "";
   document.getElementById("acteur").placeholder = "";
+  let actor;
   const tagElement = document.getElementById("tag-section");
   const tag = document.getElementById("tag");
   if (!isNaN(value)) {
     document.getElementById("acteur").placeholder = "Chaine attendu (ex: Omar Sy)";
+  }
+  // document.getElementById("acteur").placeholder = ""
+  if (tag == null) {
+    const newTag = document.createElement("span");
+    newTag.id = "tag";
+    newTag.innerHTML = `${value}<i class="fas fa-times" id="cross-tag"></i>`;
+    tagElement.appendChild(newTag);
+    actor = value.replace(" ", "%20");
+    orderBy("", actor);
   } else {
-    // document.getElementById("acteur").placeholder = ""
-    if (tag == null) {
-      const newTag = document.createElement("span");
-      newTag.id = "tag";
-      newTag.innerHTML = `${value}<i class="fas fa-times" id="cross-tag"></i>`;
-      tagElement.appendChild(newTag);
-      let actor = value.replace(" ", "%20");
-      orderBy("", actor);
-    } else {
-      tag.innerHTML = `${value}<i class="fas fa-times" id="cross-tag"></i>`;
-      let actor = value.replace(" ", "%20");
-      orderBy("", actor);
-    }
+    tag.innerHTML = `${value}<i class="fas fa-times" id="cross-tag"></i>`;
+    actor = value.replace(" ", "%20");
+    orderBy("", actor);
   }
 };
 
 feedDropDownYears();
 
-getLatestMovies("", results => {
+getLatestMovies("", "", results => {
   displayLatestMovies(results.results);
 });
 
 //-------------
-//Event listener
+// Event listener
 //-------------
 // when enter is PRESS to filter by actor
 const actorLabel = document.getElementById("acteur");
@@ -373,7 +369,7 @@ kind.addEventListener("click", () => orderBy());
 const dropdownYear = document.getElementById("dropdown-years");
 dropdownYear.addEventListener("change", event => {
   const value = event.target.value;
-  console.log(value);
+  orderBy(value, "");
 });
 
 const timeRange = document.getElementById("formControlRange");

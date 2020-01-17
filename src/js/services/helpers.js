@@ -1,36 +1,33 @@
 // eslint-disable-next-line import/prefer-default-export
 
-
 export const formatDateForApi = () => {
-    let d = new Date(),
-    month = '' + (d.getMonth() + 1),
-    day = '' + d.getDate(),
+  let d = new Date(),
+    month = "" + (d.getMonth() + 1),
+    day = "" + d.getDate(),
     year = d.getFullYear();
 
-  if (month.length < 2)
-    month = '0' + month;
-  if (day.length < 2)
-    day = '0' + day;
+  if (month.length < 2) month = "0" + month;
+  if (day.length < 2) day = "0" + day;
 
-  return [year, month, day].join('-');
-}
+  return [year, month, day].join("-");
+};
 
 export const feedDropDownYears = () => {
-  const min = 1874;
+  const min = 1891;
   const max = new Date().getFullYear();
-  const select = document.getElementById('dropdown-years');
+  const select = document.getElementById("dropdown-years");
 
-    for (let i = max; i>=min; i--){
-       const opt = document.createElement('option');
-       opt.value = i;
-       opt.innerHTML = i;
-       select.appendChild(opt);
-    }
-}
+  for (let i = max; i >= min; i--) {
+    const opt = document.createElement("option");
+    opt.value = i;
+    opt.innerHTML = i;
+    select.appendChild(opt);
+  }
+};
 
 export const convertTime = num => {
   let time = "";
-  if (num == '0' || num == null) {
+  if (num == "0" || num == null) {
     return `Inconnu`;
   }
   if (num >= 60) {
@@ -44,12 +41,9 @@ export const convertTime = num => {
       minutes = `0${minutes}`;
     }
     time = `${hours}h${minutes}`;
-     
+  } else {
+    time = `${num} mins`;
   }
-  else{
-    time = `${num} mins`
-  }
-  
+
   return time;
 };
-
