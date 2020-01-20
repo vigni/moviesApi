@@ -171,6 +171,7 @@ const searchMovie = () => {
   }
   const value = document.getElementById("searchBar").value;
   if (value !== "") {
+    // document.getElementById("options").style.display = "none";
     document.getElementById("title-home").classList.remove("active");
     document.getElementById("title-search").innerHTML = `Recherche : "${value}"`;
     document.getElementById("title-search").classList.add("active");
@@ -178,6 +179,8 @@ const searchMovie = () => {
     getMoviesBySearch(value, results => {
       displaySearchMovies(results.results);
     });
+    
+
   } else {
     document.getElementById("title-home").classList.add("active");
     document.getElementById("title-search").classList.remove("active");
@@ -240,7 +243,6 @@ const getCheckbox = () => {
       nameChecked.push(checkbox[index].getAttribute("id"));
     }
   }
-
   return nameChecked;
 };
 
@@ -248,19 +250,34 @@ const orderBy = (year, actor) => {
   const nameChecked = getCheckbox();
   let idChecked = "";
   const titleHome = document.getElementById("title-home");
+  let actorName;
 
   if (nameChecked.length != 0 && actor != undefined) {
     console.log("ffqs");
   }
-  if (actor != undefined) {
+  
+  
+  if (actor !== undefined && actor !== "" ) {
     getSearchPeoples(actor, results => {
       if (results.total_results === 0) {
         document.getElementById("acteur").placeholder = "Acteur introuvable";
       }
-
-      displayPeopleMovies(results.results);
+      else{
+        if(actor.includes('%20'))
+        {
+          actorName = actor.replace("%20", " ");
+          titleHome.innerHTML = `Trier par acteur : ${actorName}`; 
+        }
+        else{
+          titleHome.innerHTML = `Trier par acteur : ${actor}`;
+        }
+        
+        displayPeopleMovies(results.results);
+      }
     });
-  } else {
+  } 
+  if(nameChecked.length !== 0 ){
+    console.log(nameChecked)
     getTypes(results => {
       results.genres.forEach(element => {
         if (nameChecked.indexOf(element.name) != "-1") {
@@ -273,10 +290,11 @@ const orderBy = (year, actor) => {
           getLatestMovies("", idChecked, results => {
             displayLatestMovies(results.results);
           });
-        } else {
+        } else if(nameChecked == "reset"){
           getLatestMovies("", "", results => {
             displayLatestMovies(results.results);
           });
+          
         }
       }
       // if (titleSearch.classList.contains("active")) {
@@ -295,12 +313,12 @@ const orderBy = (year, actor) => {
       // }
     });
   }
-
-  if (year !== "") {
+  if (year !== "" && year !== undefined) {
     getPopularByYear(year, results => {
       displayLatestMovies(results.results);
     });
   }
+  
 };
 
 const removeTag = element => {
@@ -310,6 +328,7 @@ const removeTag = element => {
     getLatestMovies("", "", results => {
       displayLatestMovies(results.results);
     });
+    document.getElementById("title-home").innerHTML = "Les derniers films :";
   }
 };
 
