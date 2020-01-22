@@ -3,6 +3,11 @@ body {
   a:link {
     text-decoration: none;
   }
+  .home-content {
+    @media (max-width: 768px) {
+      flex-direction: column-reverse;
+    }
+  }
   .loader {
     margin: 30px auto;
     height: 30px;
@@ -97,6 +102,10 @@ body {
   }
   .containerDisplay {
     padding-top: 80px;
+
+    @media (max-width: 768px) {
+      padding-top: 160px;
+    }
   }
   //Menu
   .header {
@@ -104,6 +113,10 @@ body {
     background-color: $primaryColor;
     position: fixed;
     z-index: 2;
+
+    @media (max-width: 768px) {
+      padding: 10px 0 60px 0;
+    }
     .header-content {
       width: 100%;
       display: flex;
@@ -112,6 +125,10 @@ body {
       justify-content: space-between;
       margin-bottom: 5px;
       box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.3);
+
+      @media (max-width: 768px) {
+        flex-direction: column;
+      }
       .logo-section {
         margin-left: 50px;
         display: flex;
@@ -130,8 +147,19 @@ body {
       .menu {
         margin-right: 50px;
         display: flex;
+
+        @media (max-width: 768px) {
+          display: flex;
+          flex-direction: column-reverse;
+          align-items: center;
+          margin-right: 0;
+        }
         .search-section {
           margin-right: 50px;
+
+          @media (max-width: 768px) {
+            margin-right: 0;
+          }
           .fa-times {
             color: white;
             margin-top: 3px;
@@ -229,6 +257,11 @@ body {
       justify-content: flex-end;
       right: 8%;
       position: fixed;
+
+      @media (max-width: 768px) {
+        justify-content: center;
+        position: initial;
+      }
 
       .card {
         width: 60%;
@@ -397,9 +430,8 @@ body {
 }
 
 // Medium devices (tablets, 768px and up)
-@media (min-width: 768px) and (max-width: 991.98px) {    
-  
-  h1{
-    width: 80% !important; 
+@media (min-width: 768px) and (max-width: 991.98px) {
+  h1 {
+    width: 80% !important;
   }
 }

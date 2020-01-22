@@ -179,8 +179,6 @@ const searchMovie = () => {
     getMoviesBySearch(value, results => {
       displaySearchMovies(results.results);
     });
-    
-
   } else {
     document.getElementById("title-home").classList.add("active");
     document.getElementById("title-search").classList.remove("active");
@@ -235,49 +233,33 @@ document.getElementById("favoris-menu").onclick = () => {
   displayFavoritesMovies(Object.keys(sessionStorage));
 };
 
-const getCheckbox = () => {
-  let nameChecked = [];
-  const checkbox = document.getElementsByClassName("checkbox");
-  for (let index = 0; index < checkbox.length; index++) {
-    if (checkbox[index].checked == true) {
-      nameChecked.push(checkbox[index].getAttribute("id"));
-    }
-  }
-  return nameChecked;
-};
-
-const orderBy = (year, actor) => {
-  const nameChecked = getCheckbox();
+const orderBy = (nameChecked, year, actor) => {
   let idChecked = "";
   const titleHome = document.getElementById("title-home");
   let actorName;
 
-  if (nameChecked.length != 0 && actor != undefined) {
-    console.log("ffqs");
-  }
-  
-  
-  if (actor !== undefined && actor !== "" ) {
+  console.log(nameChecked);
+  // if (nameChecked.length != 0 && actor != undefined) {
+
+  // }
+
+  if (actor !== undefined && actor !== "") {
     getSearchPeoples(actor, results => {
       if (results.total_results === 0) {
         document.getElementById("acteur").placeholder = "Acteur introuvable";
-      }
-      else{
-        if(actor.includes('%20'))
-        {
+      } else {
+        if (actor.includes("%20")) {
           actorName = actor.replace("%20", " ");
-          titleHome.innerHTML = `Trier par acteur : ${actorName}`; 
-        }
-        else{
+          titleHome.innerHTML = `Trier par acteur : ${actorName}`;
+        } else {
           titleHome.innerHTML = `Trier par acteur : ${actor}`;
         }
-        
+
         displayPeopleMovies(results.results);
       }
     });
-  } 
-  if(nameChecked.length !== 0 ){
-    console.log(nameChecked)
+  }
+  if (nameChecked.length !== 0) {
     getTypes(results => {
       results.genres.forEach(element => {
         if (nameChecked.indexOf(element.name) != "-1") {
@@ -290,35 +272,35 @@ const orderBy = (year, actor) => {
           getLatestMovies("", idChecked, results => {
             displayLatestMovies(results.results);
           });
-        } else if(nameChecked == "reset"){
-          getLatestMovies("", "", results => {
-            displayLatestMovies(results.results);
-          });
-          
         }
       }
-      // if (titleSearch.classList.contains("active")) {
-      //   const value = document.getElementById("searchBar").value;
-      //   if (idChecked != "") {
-
-      //     getMoviesBySearchByTypes(idChecked, value, results => {
-      //       displaySearchMovies(results.results);
-      //     });
-      //   }
-      //   else {
-      //     getMoviesBySearch(value, results => {
-      //       displaySearchMovies(results.results);
-      //     });
-      //   }
-      // }
     });
   }
+  if (nameChecked.includes("reset")) {
+    getLatestMovies("", "", results => {
+      displayLatestMovies(results.results);
+    });
+  }
+
   if (year !== "" && year !== undefined) {
     getPopularByYear(year, results => {
       displayLatestMovies(results.results);
     });
   }
-  
+};
+
+const getCheckbox = () => {
+  let nameChecked = [];
+  const checkbox = document.getElementsByClassName("checkbox");
+  for (let index = 0; index < checkbox.length; index++) {
+    if (checkbox[index].checked === true) {
+      nameChecked.push(checkbox[index].getAttribute("id"));
+    }
+  }
+  if (nameChecked.length === 0) {
+    nameChecked = "reset";
+  }
+  orderBy(nameChecked, "", "");
 };
 
 const removeTag = element => {
@@ -348,11 +330,11 @@ const displayTagToOrder = value => {
     newTag.innerHTML = `${value}<i class="fas fa-times" id="cross-tag"></i>`;
     tagElement.appendChild(newTag);
     actor = value.replace(" ", "%20");
-    orderBy("", actor);
+    orderBy("", "", actor);
   } else {
     tag.innerHTML = `${value}<i class="fas fa-times" id="cross-tag"></i>`;
     actor = value.replace(" ", "%20");
-    orderBy("", actor);
+    orderBy("", "", actor);
   }
 };
 
@@ -382,13 +364,13 @@ actorSection.addEventListener("click", event => {
 
 // when CLICK on kind checkbox to filter by
 const kind = document.getElementById("kind");
-kind.addEventListener("click", () => orderBy());
+kind.addEventListener("click", () => getCheckbox());
 
 // when dropdown of year is change to filter by
 const dropdownYear = document.getElementById("dropdown-years");
 dropdownYear.addEventListener("change", event => {
   const value = event.target.value;
-  orderBy(value, "");
+  orderBy("", value, "");
 });
 
 const timeRange = document.getElementById("formControlRange");
