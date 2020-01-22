@@ -20,7 +20,7 @@ export const generateCard = (poster, title, id, date, runtime, overview, average
                   <div class="card-body">
                     <div class="favoris">
                       <h5 class="card-title">${title}</h5>`;
-
+                      
   html += `<div
                         class="heart-fav"
                       >`;

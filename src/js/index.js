@@ -14,14 +14,16 @@ const { getMoviesBySearch } = getApiServices(url, apiKey);
 const { getTypes } = getApiServices(url, apiKey);
 const { getSearchPeoples } = getApiServices(url, apiKey);
 const { getPopularByYear } = getApiServices(url, apiKey);
+const loader = document.getElementsByClassName("section-loader");
+
 const displayLatestMovies = results => {
   let card = "";
   results.forEach(element => {
     getOneMovie(element.id, resp => {
       const runtime = convertTime(resp.runtime);
       let overviewSlice = element.overview;
-      if (overviewSlice.length > 199) {
-        overviewSlice = `${element.overview.slice(0, 80)}...`;
+      if (overviewSlice.length > 110) {
+        overviewSlice = `${element.overview.slice(0, 200)}...`;
       }
       card += generateCard(
         resp.poster_path,
@@ -32,10 +34,11 @@ const displayLatestMovies = results => {
         overviewSlice,
         resp.vote_average
       );
-
+      
       document.getElementById("articles").innerHTML = card;
     });
   });
+  removeLoader();
 };
 
 const displayPeopleMovies = results => {
@@ -46,7 +49,6 @@ const displayPeopleMovies = results => {
     actor = element.name;
 
     element.known_for.forEach(elem => {
-      // getOneMovie(elem.id, resp => {
 
       const runtime = convertTime(elem.runtime);
       let overviewSlice = elem.overview;
@@ -68,13 +70,14 @@ const displayPeopleMovies = results => {
       );
 
       document.getElementById("articles").innerHTML = card;
-      // });
     });
   });
+  removeLoader();
 };
 
 const displayFavoritesMovies = results => {
   let card = "";
+  setLoader();
   if (results !== "") {
     results.forEach(element => {
       getOneMovie(element, resp => {
@@ -99,6 +102,7 @@ const displayFavoritesMovies = results => {
     document.getElementById("title-favoris").innerHTML = `Vos films favoris :`;
     window.changeContent("favoris");
   }
+  removeLoader();
   document.getElementById("favoris-section").innerHTML = "Vous n'avez pas de favoris &#128577";
 };
 
@@ -126,8 +130,29 @@ const displaySearchMovies = results => {
       });
     });
   }
+  removeLoader();
   document.getElementById("articles").innerHTML = "Aucun résultat";
 };
+
+const removeLoader = () => {
+  Object.keys(loader).forEach(elemKey => {
+    if(loader[elemKey].classList.contains("active"))
+    {
+      loader[elemKey].classList.remove("active");
+    }
+  });
+}
+
+const setLoader = () => {
+  Object.keys(loader).forEach(elemKey => {
+    
+    if(loader[elemKey].classList.contains("active") == false)
+    {
+      console.log(loader[elemKey].classList.contains("active"));
+      loader[elemKey].classList.add("active");
+    }
+  });
+}
 
 window.changeContent = function(id) {
   const contentsToDisplay = document.getElementsByClassName("containerDisplay");
@@ -171,17 +196,19 @@ const searchMovie = () => {
   }
   const value = document.getElementById("searchBar").value;
   if (value !== "") {
+    
     // document.getElementById("options").style.display = "none";
     document.getElementById("title-home").classList.remove("active");
     document.getElementById("title-search").innerHTML = `Recherche : "${value}"`;
     document.getElementById("title-search").classList.add("active");
-
+    setLoader();
     getMoviesBySearch(value, results => {
       displaySearchMovies(results.results);
     });
   } else {
     document.getElementById("title-home").classList.add("active");
     document.getElementById("title-search").classList.remove("active");
+    setLoader();
     getLatestMovies("", "", results => {
       displayLatestMovies(results.results);
     });
@@ -238,12 +265,12 @@ const orderBy = (nameChecked, year, actor) => {
   const titleHome = document.getElementById("title-home");
   let actorName;
 
-  console.log(nameChecked);
   // if (nameChecked.length != 0 && actor != undefined) {
 
   // }
 
   if (actor !== undefined && actor !== "") {
+    setLoader();
     getSearchPeoples(actor, results => {
       if (results.total_results === 0) {
         document.getElementById("acteur").placeholder = "Acteur introuvable";
@@ -254,7 +281,7 @@ const orderBy = (nameChecked, year, actor) => {
         } else {
           titleHome.innerHTML = `Trier par acteur : ${actor}`;
         }
-
+        
         displayPeopleMovies(results.results);
       }
     });
@@ -269,6 +296,7 @@ const orderBy = (nameChecked, year, actor) => {
       if (titleHome.classList.contains("active")) {
         if (idChecked !== "") {
           idChecked = idChecked.substr(3);
+          setLoader();
           getLatestMovies("", idChecked, results => {
             displayLatestMovies(results.results);
           });
@@ -277,12 +305,14 @@ const orderBy = (nameChecked, year, actor) => {
     });
   }
   if (nameChecked.includes("reset")) {
+    setLoader();
     getLatestMovies("", "", results => {
       displayLatestMovies(results.results);
     });
   }
 
   if (year !== "" && year !== undefined) {
+    setLoader();
     getPopularByYear(year, results => {
       displayLatestMovies(results.results);
     });
@@ -305,8 +335,8 @@ const getCheckbox = () => {
 
 const removeTag = element => {
   if (element.getAttribute("id") === "cross-tag" || element.parentNode.getAttribute("id") === "cross-tag") {
-    console.log(document.getElementById("tag"));
     document.getElementById("tag").remove();
+    setLoader();
     getLatestMovies("", "", results => {
       displayLatestMovies(results.results);
     });
@@ -376,7 +406,6 @@ dropdownYear.addEventListener("change", event => {
 const timeRange = document.getElementById("formControlRange");
 timeRange.addEventListener("change", event => {
   const value = event.target.value;
-  console.log(value);
 });
 
 // const whenScrollIsAtBottom = callback => {
