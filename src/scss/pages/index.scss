@@ -1,3 +1,6 @@
+html {
+  scroll-behavior: smooth;
+}
 body {
   font-family: Montserrat;
   a:link {
@@ -12,12 +15,11 @@ body {
     color: $secondaryColor;
     opacity: 0;
     display: none;
-    transition: 0.3s ease-in-out;
-    .active {
-      opacity: 0.5;
+    &.active {
+      opacity: 0.7;
       display: block;
     }
-    :hover {
+    &:hover {
       position: fixed;
       cursor: pointer;
       opacity: 1;

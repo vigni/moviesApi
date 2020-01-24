@@ -22,8 +22,8 @@ const displayLatestMovies = (time, results) => {
     getOneMovie(element.id, resp => {
       const runtime = convertTime(resp.runtime);
       const overview = sliceOverview(resp.overview);
-      if (time !== "" ) {
-        if(time > resp.runtime){
+      if (time !== "") {
+        if (time > resp.runtime) {
           card += generateCard(
             resp.poster_path,
             resp.title,
@@ -53,35 +53,67 @@ const displayLatestMovies = (time, results) => {
   removeLoader();
 };
 
-const displayPeopleMovies = results => {
+const displayPeopleMovies = (types ,results) => {
   let card = "";
   let actor;
   let title;
+  
   results.forEach(element => {
     actor = element.name;
 
     element.known_for.forEach(elem => {
+      getOneMovie(elem.id, resp => {
+        const runtime = convertTime(resp.runtime);
+        let overviewSlice = resp.overview;
+        if (overviewSlice.length > 199) {
+          overviewSlice = `${resp.overview.slice(0, 80)}...`;
+        }
+        title = resp.title == undefined ? resp.original_name : resp.title;
+        let genresMovie = [];
+        resp.genres.forEach(genre => {
+          genresMovie.push(genre.name);
+        });
+        
+        if(types != ""){
+          let compteur = 0;
+          types.forEach(type => {
+            if(genresMovie.includes(type.toString())){
+              compteur = compteur + 1;
+            }
+          });
+          if(compteur == types.length)
+          {
+            card += generateCard(
+              resp.poster_path,
+              title,
+              resp.id,
+              resp.release_date,
+              runtime,
+              overviewSlice,
+              resp.vote_average,
+              "",
+              actor
+            );
+          }
+         
+          
+        }else{
+          card += generateCard(
+            resp.poster_path,
+            title,
+            resp.id,
+            resp.release_date,
+            runtime,
+            overviewSlice,
+            resp.vote_average,
+            "",
+            actor
+          );
+        }
+        
 
-      const runtime = convertTime(elem.runtime);
-      let overviewSlice = elem.overview;
-      if (overviewSlice.length > 199) {
-        overviewSlice = `${elem.overview.slice(0, 80)}...`;
-      }
-      title = elem.title == undefined ? elem.original_name : elem.title;
-
-      card += generateCard(
-        elem.poster_path,
-        title,
-        elem.id,
-        elem.release_date,
-        runtime,
-        overviewSlice,
-        elem.vote_average,
-        "",
-        actor
-      );
-
-      document.getElementById("articles").innerHTML = card;
+        document.getElementById("articles").innerHTML = card;
+      });
     });
   });
   removeLoader();
@@ -167,14 +199,12 @@ window.changeContent = function (id) {
   const contentsToDisplay = document.getElementsByClassName("containerDisplay");
   const fav = document.getElementById("fav-menu");
   const home = document.getElementById("home-menu");
-  
-  if(id === "favoris")
-  {
+
+  if (id === "favoris") {
     fav.classList.add("active");
     home.classList.remove("active");
   }
-  if(id === "home")
-  {
+  if (id === "home") {
     fav.classList.remove("active");
     home.classList.add("active");
     getLatestMovies("", "", results => {
@@ -184,7 +214,7 @@ window.changeContent = function (id) {
   Object.keys(contentsToDisplay).forEach(elemKey => {
     contentsToDisplay[elemKey].classList.remove("active");
   });
-  
+
   document.getElementById(id).classList.add("active");
 };
 
@@ -305,18 +335,85 @@ document.getElementById("search").onclick = () => {
   searchMovie();
 };
 
-const orderBy = (nameChecked, year, actor) => {
+const orderBy = (reset) => {
   let idChecked = "";
   const titleHome = document.getElementById("title-home");
   let actorName;
+  const year = document.getElementById("dropdown-years").value;
+  const nameChecked = getCheckbox();
+  let actor = "";
+  if (document.getElementById("tag")) {
+    actor = document.getElementById("tag").textContent.replace(" ", "%20");
 
-  // if (nameChecked.length != 0 && actor != undefined) {
+  }
 
-  // }
+  if (nameChecked.length !== 0) {
+    getTypes(results => {
+      results.genres.forEach(element => {
+        if (nameChecked.indexOf(element.name) != "-1") {
+          idChecked += `%2C${element.id}`;
+        }
+      });
+      if (titleHome.classList.contains("active")) {
+        idChecked = idChecked.substr(3);
+        if (actor !== "") { 
+          getSearchPeoples(actor, results => {
+            if (results.total_results === 0) {
+              document.getElementById("acteur").placeholder = "Acteur introuvable";
+            } else {
+              if (actor.includes("%20")) {
+                actorName = actor.replace("%20", " ");
+                titleHome.innerHTML = `Trier par acteur : ${actorName}`;
+              } else {
+                titleHome.innerHTML = `Trier par acteur : ${actor}`;
+              }
+      
+              displayPeopleMovies(nameChecked, results.results);
+            }
+          });
+        }
+        else {
+          setLoader();
+          getPopularByYear(idChecked, year, results => {
+            displayLatestMovies("", results.results);
+          });
+        }
+      }
+    });
+  }
+  else if (reset) {
+    
+    if (actor !== "") {
+      setLoader();
+      getSearchPeoples(actor, results => {
+        if (results.total_results === 0) {
+          document.getElementById("acteur").placeholder = "Acteur introuvable";
+        } else {
+          if (actor.includes("%20")) {
+            actorName = actor.replace("%20", " ");
+            titleHome.innerHTML = `Trier par acteur : ${actorName}`;
+          } else {
+            titleHome.innerHTML = `Trier par acteur : ${actor}`;
+          }
 
-  if (actor !== undefined && actor !== "") {
+          displayPeopleMovies("", results.results);
+        }
+      });
+    }
+    else{
+      setLoader();
+      getLatestMovies("", "", results => {
+        displayLatestMovies("", results.results);
+      });
+    }
+    
+  }
+
+  else if (actor !== "" && year !== "") {
+
     setLoader();
     getSearchPeoples(actor, results => {
+      console.log(results)
       if (results.total_results === 0) {
         document.getElementById("acteur").placeholder = "Acteur introuvable";
       } else {
@@ -327,39 +424,14 @@ const orderBy = (nameChecked, year, actor) => {
           titleHome.innerHTML = `Trier par acteur : ${actor}`;
         }
 
-        displayPeopleMovies(results.results);
+        displayPeopleMovies("", results.results);
       }
     });
   }
-  if (nameChecked.length !== 0) {
-    getTypes(results => {
-      results.genres.forEach(element => {
-        if (nameChecked.indexOf(element.name) != "-1") {
-          idChecked += `%2C${element.id}`;
-        }
-      });
-      if (titleHome.classList.contains("active")) {
-        if (idChecked !== "") {
-          idChecked = idChecked.substr(3);
-          setLoader();
-          getLatestMovies("", idChecked, results => {
-            displayLatestMovies("", results.results);
-          });
-        }
-      }
-    });
-  }
-  if (nameChecked.includes("reset")) {
+  else if (year !== "") {
     setLoader();
-    getLatestMovies("", "", results => {
+    getPopularByYear("", year, results => {
       displayLatestMovies("", results.results);
-    });
-  }
-
-  if (year !== "" && year !== undefined) {
-    setLoader();
-    getPopularByYear(year, results => {
-      displayLatestMovies("",results.results);
     });
   }
 };
@@ -372,11 +444,11 @@ const getCheckbox = () => {
       nameChecked.push(checkbox[index].getAttribute("id"));
     }
   }
-  if (nameChecked.length === 0) {
-    nameChecked = "reset";
-  }
-  console.log(nameChecked)
-  orderBy(nameChecked, "", "");
+  // if (nameChecked.length === 0) {
+  //   nameChecked = "reset";
+  // }
+  return nameChecked;
+  // orderBy(nameChecked, "", "");
 };
 
 const removeTag = element => {
@@ -393,7 +465,6 @@ const removeTag = element => {
 const displayTagToOrder = value => {
   document.getElementById("acteur").value = "";
   document.getElementById("acteur").placeholder = "";
-  let actor;
   const tagElement = document.getElementById("tag-section");
   const tag = document.getElementById("tag");
   if (!isNaN(value)) {
@@ -405,12 +476,10 @@ const displayTagToOrder = value => {
     newTag.id = "tag";
     newTag.innerHTML = `${value}<i class="fas fa-times" id="cross-tag"></i>`;
     tagElement.appendChild(newTag);
-    actor = value.replace(" ", "%20");
-    orderBy("", "", actor);
+    orderBy(false);
   } else {
     tag.innerHTML = `${value}<i class="fas fa-times" id="cross-tag"></i>`;
-    actor = value.replace(" ", "%20");
-    orderBy("", "", actor);
+    orderBy(false);
   }
 };
 
@@ -425,19 +494,25 @@ getLatestMovies("", "", results => {
 //-------------
 // when dropdown of year is change to filter by
 const dropdownYear = document.getElementById("dropdown-years");
-dropdownYear.addEventListener("change", event => {
-  const value = event.target.value;
-  orderBy("", value, "");
+dropdownYear.addEventListener("change", () => {
+  orderBy(false, "");
 });
 
 // when CLICK on kind checkbox to filter by
 const kind = document.getElementById("kind");
-kind.addEventListener("click", () => getCheckbox());
+kind.addEventListener("click", () => {
+  let reset = false;
+  if (getCheckbox() == "") {
+    reset = true;
+  }
+  orderBy(reset, "")
+});
 
 // when enter is PRESS to filter by actor
 const actorLabel = document.getElementById("acteur");
 actorLabel.addEventListener("keypress", e => {
   if (e.key === "Enter") {
+    console.log()
     displayTagToOrder(actorLabel.value);
   }
 });
@@ -465,10 +540,10 @@ timeRange.addEventListener("change", () => {
 
 const displayArrow = () => {
   var scroll = window.scrollY;
-  if (scroll <= document.getElementById("title-home").offsetTop) {
-    document.getElementById("#arrow-to-top").classList.remove("active");
+  if (scroll <= document.getElementById("options").offsetTop) {
+    document.getElementById("arrow-to-top").classList.remove("active");
   }
-  if (scroll >= document.getElementById("title-home").offsetTop) {
+  if (scroll >= document.getElementById("options").offsetTop) {
     document.getElementById("arrow-to-top").classList.add("active");
   }
 }

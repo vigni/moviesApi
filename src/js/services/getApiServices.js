@@ -15,11 +15,11 @@ const getApiServices = (url, apiKey) => ({
       `${url}3/discover/movie?api_key=${apiKey}&language=fr-FR&sort_by=release_date.desc&include_adult=false&include_video=false&page=1&release_date.lte=${fullDate}&with_original_language=fr&with_genres=${types}&primary_release_year=${year}`
     );
     request.then(({ data }) => callback(data));
-  },
+  }, 
 
-  getPopularByYear(year, callback) {
+  getPopularByYear(types, year, callback) {
     const request = axios.get(
-      `${url}3/discover/movie?api_key=${apiKey}&language=fr-FR&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&primary_release_year=${year}`
+      `${url}3/discover/movie?api_key=${apiKey}&language=fr-FR&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&primary_release_year=${year}&with_genres=${types}`
     );
     request.then(({ data }) => callback(data));
   },
