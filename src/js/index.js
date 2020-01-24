@@ -3,7 +3,7 @@ import "../scss/main.scss";
 import "bootstrap/js/src/dropdown";
 
 import getApiServices from "./services/getApiServices";
-import { convertTime, feedDropDownYears } from "./services/helpers";
+import { convertTime, feedDropDownYears, sliceOverview } from "./services/helpers";
 import { generateCard, generateHtmlDetailsMovie } from "./services/generateHtml";
 
 const url = "https://api.themoviedb.org/";
@@ -16,27 +16,39 @@ const { getSearchPeoples } = getApiServices(url, apiKey);
 const { getPopularByYear } = getApiServices(url, apiKey);
 const loader = document.getElementsByClassName("section-loader");
 
-const displayLatestMovies = results => {
+const displayLatestMovies = (time, results) => {
   let card = "";
   results.forEach(element => {
     getOneMovie(element.id, resp => {
       const runtime = convertTime(resp.runtime);
-      let overviewSlice = element.overview;
-      if (overviewSlice.length > 110) {
-        overviewSlice = `${element.overview.slice(0, 200)}...`;
+      const overview = sliceOverview(resp.overview);
+      if (time !== "" ) {
+        if(time > resp.runtime){
+          card += generateCard(
+            resp.poster_path,
+            resp.title,
+            resp.id,
+            resp.release_date,
+            runtime,
+            overview,
+            resp.vote_average
+          );
+        }
       }
-      card += generateCard(
-        resp.poster_path,
-        resp.title,
-        resp.id,
-        resp.release_date,
-        runtime,
-        overviewSlice,
-        resp.vote_average
-      );
-      
+      else {
+        card += generateCard(
+          resp.poster_path,
+          resp.title,
+          resp.id,
+          resp.release_date,
+          runtime,
+          overview,
+          resp.vote_average
+        );
+      }
       document.getElementById("articles").innerHTML = card;
     });
+
   });
   removeLoader();
 };
@@ -136,8 +148,7 @@ const displaySearchMovies = results => {
 
 const removeLoader = () => {
   Object.keys(loader).forEach(elemKey => {
-    if(loader[elemKey].classList.contains("active"))
-    {
+    if (loader[elemKey].classList.contains("active")) {
       loader[elemKey].classList.remove("active");
     }
   });
@@ -145,40 +156,73 @@ const removeLoader = () => {
 
 const setLoader = () => {
   Object.keys(loader).forEach(elemKey => {
-    
-    if(loader[elemKey].classList.contains("active") == false)
-    {
-      console.log(loader[elemKey].classList.contains("active"));
+
+    if (loader[elemKey].classList.contains("active") == false) {
       loader[elemKey].classList.add("active");
     }
   });
 }
 
-window.changeContent = function(id) {
+window.changeContent = function (id) {
   const contentsToDisplay = document.getElementsByClassName("containerDisplay");
+  const fav = document.getElementById("fav-menu");
+  const home = document.getElementById("home-menu");
+  
+  if(id === "favoris")
+  {
+    fav.classList.add("active");
+    home.classList.remove("active");
+  }
+  if(id === "home")
+  {
+    fav.classList.remove("active");
+    home.classList.add("active");
+    getLatestMovies("", "", results => {
+      displayLatestMovies("", results.results);
+    });
+  }
   Object.keys(contentsToDisplay).forEach(elemKey => {
     contentsToDisplay[elemKey].classList.remove("active");
   });
+  
   document.getElementById(id).classList.add("active");
 };
 
-window.viewMore = function(id) {
+window.viewMore = function (id) {
   let card = "";
   getOneMovie(id, resp => {
     const runtime = convertTime(resp.runtime);
     const overviewSlice = resp.overview;
-
+    const vote_average = `${resp.vote_average * 10}%`;
+    let nameGenres = "";
+    resp.genres.forEach(function (genre) {
+      nameGenres += `- ${genre.name} `;
+    });
+    let nameCountries = "";
+    resp.spoken_languages.forEach(function (country) {
+      nameCountries += `- ${country.name} `;
+    });
+    let prods = "";
+    resp.production_companies.forEach(function (prod) {
+      prods += `- ${prod.name} `;
+    });
+    const budget = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(resp.budget)
+    const revenue = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(resp.revenue)
+    console.log(resp)
+    console.log(revenue)
     card += generateHtmlDetailsMovie(
       resp.poster_path,
       resp.title,
       resp.release_date,
       runtime,
       overviewSlice,
-      resp.vote_average,
-      resp.genres,
-      resp.budget,
-      resp.spoken_languages,
-      id
+      vote_average,
+      nameGenres.substr(1),
+      budget,
+      nameCountries.substr(1),
+      id,
+      prods.substr(1),
+      revenue
     );
     document.getElementById("title-detail").innerHTML = `Détails : ${resp.title}`;
     document.getElementById("detail-container").innerHTML = card;
@@ -188,6 +232,7 @@ window.viewMore = function(id) {
 };
 
 const searchMovie = () => {
+
   if (
     document.getElementById("favoris").classList.contains("active") ||
     document.getElementById("detail").classList.contains("active")
@@ -196,7 +241,7 @@ const searchMovie = () => {
   }
   const value = document.getElementById("searchBar").value;
   if (value !== "") {
-    
+    document.getElementById("options").style.display = "none";
     // document.getElementById("options").style.display = "none";
     document.getElementById("title-home").classList.remove("active");
     document.getElementById("title-search").innerHTML = `Recherche : "${value}"`;
@@ -206,16 +251,17 @@ const searchMovie = () => {
       displaySearchMovies(results.results);
     });
   } else {
+    document.getElementById("options").style.display = "flex";
     document.getElementById("title-home").classList.add("active");
     document.getElementById("title-search").classList.remove("active");
     setLoader();
     getLatestMovies("", "", results => {
-      displayLatestMovies(results.results);
+      displayLatestMovies("", results.results);
     });
   }
 };
 
-window.changeHeart = function(id) {
+window.changeHeart = function (id) {
   const favoriteMovies = Object.keys(sessionStorage);
   const element = document.getElementById(id);
   const elementBis = document.getElementById(`${id}-detail`);
@@ -241,9 +287,8 @@ window.changeHeart = function(id) {
   }
 };
 
-window.deleteFavorite = function(id) {
+window.deleteFromFavorite = function (id) {
   const favoriteMovies = Object.keys(sessionStorage);
-  const element = document.getElementById(id);
   if (favoriteMovies.includes(id.toString())) {
     sessionStorage.removeItem(id);
   } else {
@@ -252,12 +297,12 @@ window.deleteFavorite = function(id) {
   displayFavoritesMovies(Object.keys(sessionStorage));
 };
 
-document.getElementById("search").onclick = () => {
-  searchMovie();
-};
-
 document.getElementById("favoris-menu").onclick = () => {
   displayFavoritesMovies(Object.keys(sessionStorage));
+};
+
+document.getElementById("search").onclick = () => {
+  searchMovie();
 };
 
 const orderBy = (nameChecked, year, actor) => {
@@ -281,7 +326,7 @@ const orderBy = (nameChecked, year, actor) => {
         } else {
           titleHome.innerHTML = `Trier par acteur : ${actor}`;
         }
-        
+
         displayPeopleMovies(results.results);
       }
     });
@@ -298,7 +343,7 @@ const orderBy = (nameChecked, year, actor) => {
           idChecked = idChecked.substr(3);
           setLoader();
           getLatestMovies("", idChecked, results => {
-            displayLatestMovies(results.results);
+            displayLatestMovies("", results.results);
           });
         }
       }
@@ -307,14 +352,14 @@ const orderBy = (nameChecked, year, actor) => {
   if (nameChecked.includes("reset")) {
     setLoader();
     getLatestMovies("", "", results => {
-      displayLatestMovies(results.results);
+      displayLatestMovies("", results.results);
     });
   }
 
   if (year !== "" && year !== undefined) {
     setLoader();
     getPopularByYear(year, results => {
-      displayLatestMovies(results.results);
+      displayLatestMovies("",results.results);
     });
   }
 };
@@ -330,6 +375,7 @@ const getCheckbox = () => {
   if (nameChecked.length === 0) {
     nameChecked = "reset";
   }
+  console.log(nameChecked)
   orderBy(nameChecked, "", "");
 };
 
@@ -338,7 +384,7 @@ const removeTag = element => {
     document.getElementById("tag").remove();
     setLoader();
     getLatestMovies("", "", results => {
-      displayLatestMovies(results.results);
+      displayLatestMovies("", results.results);
     });
     document.getElementById("title-home").innerHTML = "Les derniers films :";
   }
@@ -371,12 +417,23 @@ const displayTagToOrder = value => {
 feedDropDownYears();
 
 getLatestMovies("", "", results => {
-  displayLatestMovies(results.results);
+  displayLatestMovies("", results.results);
 });
 
 //-------------
 // Event listener
 //-------------
+// when dropdown of year is change to filter by
+const dropdownYear = document.getElementById("dropdown-years");
+dropdownYear.addEventListener("change", event => {
+  const value = event.target.value;
+  orderBy("", value, "");
+});
+
+// when CLICK on kind checkbox to filter by
+const kind = document.getElementById("kind");
+kind.addEventListener("click", () => getCheckbox());
+
 // when enter is PRESS to filter by actor
 const actorLabel = document.getElementById("acteur");
 actorLabel.addEventListener("keypress", e => {
@@ -387,48 +444,34 @@ actorLabel.addEventListener("keypress", e => {
 
 // when CLICK on cross to remove actor tag
 const actorSection = document.getElementById("actor-section");
-
 actorSection.addEventListener("click", event => {
   removeTag(event.target);
 });
 
-// when CLICK on kind checkbox to filter by
-const kind = document.getElementById("kind");
-kind.addEventListener("click", () => getCheckbox());
 
-// when dropdown of year is change to filter by
-const dropdownYear = document.getElementById("dropdown-years");
-dropdownYear.addEventListener("change", event => {
-  const value = event.target.value;
-  orderBy("", value, "");
-});
-
+//When rangeControl is change to filter by runtime
 const timeRange = document.getElementById("formControlRange");
-timeRange.addEventListener("change", event => {
+timeRange.addEventListener("change", () => {
+  const label = document.getElementById("formControlRange");
+  const range = document.getElementById("range-time");
+
+  range.innerHTML = convertTime(label.value * 3);
+  setLoader();
+  getLatestMovies("", "", results => {
+    displayLatestMovies((label.value * 3), results.results);
+  });
   const value = event.target.value;
 });
 
-// const whenScrollIsAtBottom = callback => {
-//   let canRun = true;
-
-//   window.addEventListener(
-//     "scroll",
-//     () => {
-//       if (
-//         window.innerHeight + window.scrollY >= document.body.offsetHeight &&
-//         typeof callback === "function" &&
-//         canRun
-//       ) {
-//         callback();
-//         canRun = false;
-
-//         setTimeout(() => {
-//           canRun = true;
-//         }, 1000);
-//       }
-//     },
-//     false
-//   );
-// };
-
-// whenScrollIsAtBottom(loadMore);
+const displayArrow = () => {
+  var scroll = window.scrollY;
+  if (scroll <= document.getElementById("title-home").offsetTop) {
+    document.getElementById("#arrow-to-top").classList.remove("active");
+  }
+  if (scroll >= document.getElementById("title-home").offsetTop) {
+    document.getElementById("arrow-to-top").classList.add("active");
+  }
+}
+window.addEventListener("load", displayArrow);
+window.addEventListener("resize", displayArrow);
+window.addEventListener("scroll", displayArrow);

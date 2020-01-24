@@ -36,9 +36,9 @@
 
             </div>
           </div>
-          <a href="#" class="home">Home</a>
-          <div class="fav-container">
-            <a href="#" class="favorite active" onClick="changeContent('favoris')" id="favoris-menu">Mes favoris</a>
+          <a href="#" class="home active" id="home-menu" onClick="changeContent('home')">Home</a>
+          <div class="fav-container" id="fav-menu">
+            <a href="#" class="favorite" onClick="changeContent('favoris')" id="favoris-menu">Mes favoris</a>
             <i style="color: white;" class="far fa-heart"></i>
           </div>
         </div>
@@ -174,7 +174,7 @@
                 <div class="during section">
                   <form>
                     <div class="form-group">
-                      <label for="formControlRange">Durée</label>
+                      <label for="formControlRange">Durée :</label><span id="range-time"></span>
                       <input type="range" class="form-control-range" id="formControlRange" />
                     </div>
                   </form>
@@ -210,8 +210,22 @@
   </div>
 
 </div>
-  <!-- <script src="node-modules/rater-js/index.js"> </script> -->
-  <script src="bundle.js"></script>
+<div id="arrow-to-top">
+  <i  onClick="window.scrollTo(x,y);" class="fas fa-arrow-up fa-2x"></i>
+</div>
+
+<footer>
+<div class="footer">
+  <p class="rights display-buttons">© 2019. Tous droits réservés | Designé par <span id="name"> Vigni </span> </p>
+  <!-- <div class="footer-icones">
+      <a target="_blank" href="mailto:vigni.pro@gmail.com"><img src="img/mail.png" alt="" height="50px"></a>
+      <a target="_blank" href="https://github.com/vigni"><img src="img/github.png" alt="" height="50px"></a>
+      <a target="_blank" href="https://www.linkedin.com/in/lucas-vigni-62704216a/"><img src="img/inn.png" alt="" height="50px"></a>
+  </div> -->
+</div>
+</footer>
+
+<script src="bundle.js"></script>
 
 </body>
 

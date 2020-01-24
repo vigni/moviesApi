@@ -3,6 +3,27 @@ body {
   a:link {
     text-decoration: none;
   }
+ 
+  
+  #arrow-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 50px;
+    color: $secondaryColor;
+    opacity: 0;
+    display: none;
+    transition: 0.3s ease-in-out;
+    .active {
+      opacity: 0.5;
+      display: block;
+    }
+    :hover {
+      position: fixed;
+      cursor: pointer;
+      opacity: 1;
+    }
+  }
+  
   .home-content {
     @media (max-width: 768px) {
       flex-direction: column-reverse;
@@ -190,26 +211,36 @@ body {
         display: flex;
         align-items: center;
         .favorite {
-          padding: 10px 10px;
-          display: none;
-          &.active {
-            display: block;
-          }
+          padding: 10px 15px;
+          
         }
         &:hover .favorite {
-          color: $secondaryColor;
+          color : $secondaryColor; 
+          
         }
         &:hover .fa-heart {
-          color: $secondaryColor !important;
+          color : $secondaryColor !important; 
+        }
+        &.active{
+          .favorite{
+            color: $secondaryColor;
+          } .fa-heart{
+            color: $secondaryColor !important;
+          }
         }
       }
-
+  
       .home {
-        padding: 10px 20px;
-        display: none;
+        padding: 10px 10px;
+        display: block;
+        border-right: solid 1px $secondaryColor;
         &.active {
-          display: block;
+          color: $secondaryColor;
         }
+        &:hover {
+          color : $secondaryColor;
+        }
+
       }
     }
   }
@@ -274,6 +305,11 @@ body {
           .form-control:focus {
             box-shadow: none !important;
             border: 0.5px solid $secondaryColor !important;
+          }
+          #range-time{
+            font-weight: bold;
+            margin-left: 10px;
+            color: $secondaryColor;
           }
         }
       }
@@ -361,12 +397,21 @@ body {
       opacity: 1;
       justify-content: center;
       height: auto;
+      min-height: 90vh;
     }
     .one-movie-content {
       #detail-container {
+        @include mixin-shadow-card;
+        
         .card-title {
           font-size: 2em;
           font-weight: bold;
+        }
+
+        #overview-detail {
+          margin-right: 70px;
+          border-bottom: solid 1px $secondaryColor;
+          padding-bottom: 20px;
         }
         .title-one-movie {
           display: flex;
@@ -383,10 +428,6 @@ body {
           font-weight: bold;
           font-size: 1.1em;
         }
-        #btn-retour {
-          padding: 5px 15px;
-          height: 35px;
-        }
       }
     }
   }
@@ -401,6 +442,7 @@ body {
       display: flex;
       opacity: 1;
       height: auto;
+      min-height: 90vh;
       justify-content: center;
     }
     #favoris-section {
@@ -426,6 +468,31 @@ body {
     }
   }
 }
+.footer {
+  height: 100px;
+  background-color: $primaryColor;
+  color: white;
+  text-align: center;
+  .rights {
+    padding-top: 20px;
+    color: white;
+  }
+  
+  #name {
+    color: $secondaryColor;
+  }
+  
+  // .footer img {
+  //   height: 40px;
+  //   width: 40px;
+  // }
+}
+
+
+
+
+
+
 
 // Medium devices (tablets, 768px and up)
 @media (min-width: 768px) and (max-width: 991.98px) {

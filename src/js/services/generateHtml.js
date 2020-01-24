@@ -25,7 +25,7 @@ export const generateCard = (poster, title, id, date, runtime, overview, average
                         class="heart-fav"
                       >`;
   if (provenance === "favorite") {
-    html += `<i style="color:red" onClick="deleteFavorite(${id})" class="fas fa-trash"></i>`;
+    html += `<i style="color:red" onClick="deleteFromFavorite(${id})" class="fas fa-trash"></i>`;
   } else if (Object.keys(sessionStorage).includes(id.toString())) {
     html += `<i style="color: red;" class="fas fa-heart" id="${id}" onClick="changeHeart(${id})"></i>`;
   } else {
@@ -38,7 +38,7 @@ export const generateCard = (poster, title, id, date, runtime, overview, average
     html += `<p class="card-text" id ="section-date"><i class="fas fa-calendar-alt"></i><small class="text-muted" id="date">${`${
       datefr.getDate() < 10 ? `0${datefr.getDate()}` : datefr.getDate()
     }/${
-      datefr.getMonth() < 10 ? `0${datefr.getMonth() + 1}` : datefr.getMonth() + 1
+      datefr.getMonth()+ 1 < 10 ? `0${datefr.getMonth() + 1}` : datefr.getMonth() + 1
     }/${datefr.getFullYear()} <span class="sep-date">|</span><i class="fas fa-clock"></i> ${runtime} `} </small></p>`;
   } else {
     html += `<p class="card-text" id ="section-date"><i class="fas fa-calendar-alt"></i><small class="text-muted" id="date">${` Inconue <span class="sep-date">|</span><i class="fas fa-clock"></i> ${runtime} `} </small></p>`;
@@ -88,21 +88,14 @@ export const generateHtmlDetailsMovie = (
   genres,
   budget,
   countries,
-  id
+  id,
+  prod,
+  revenue
 ) => {
   const urlPictureApi = "https://image.tmdb.org/t/p/original/";
   const datefr = new Date(date);
 
   const posterUrl = urlPictureApi + poster;
-  const averageStarsPourcent = `${average * 10}%`;
-  let nameGenres = "";
-  genres.forEach(function(genre) {
-    nameGenres += `${genre.name} `;
-  });
-  let nameCountry = "";
-  countries.forEach(function(country) {
-    nameCountry += `${country.name} `;
-  });
 
   let html = "";
   html = `<div class="one-movie-detail row">
@@ -115,19 +108,17 @@ export const generateHtmlDetailsMovie = (
                 <div class="title-heart">`;
   html += `<h5 class="card-title">${title}</h5>`;
   if (Object.keys(sessionStorage).includes(id.toString())) {
-    html += `<i style="color: red;" class="fas fa-heart " id="${id}-detail" onClick="changeHeart(${id})"></i>`;
+    html += `<i style="color: red;" class="fas fa-heart " id="${id}-detail" onClick="changeHeart(${id})"></i></div></div>`;
   } else {
-    html += `<i style="color: red;" class="far fa-heart" id="${id}-detail" onClick="changeHeart(${id})"></i>`;
+    html += `<i style="color: red;" class="far fa-heart" id="${id}-detail" onClick="changeHeart(${id})"></i></div></div>`;
   }
 
-  html += `</div><button type="button" id="btn-retour" class="btn" onClick="changeContent('home')"> Retour </button>
-              </div>`;
 
   if (!isNaN(datefr)) {
     html += `<p class="card-text" id ="section-date"><i class="fas fa-calendar-alt"></i><small class="text-muted" id="date">${`${
       datefr.getDate() < 10 ? `0${datefr.getDate()}` : datefr.getDate()
     }/${
-      datefr.getMonth() < 10 ? `0${datefr.getMonth() + 1}` : datefr.getMonth() + 1
+      datefr.getMonth()+ 1 < 10 ? `0${datefr.getMonth() + 1}` : datefr.getMonth() + 1
     }/${datefr.getFullYear()} <span class="sep-date">|</span><i class="fas fa-clock"></i> ${runtime} `} </small></p>`;
   } else {
     html += `<p class="card-text" id ="section-date"><i class="fas fa-calendar-alt"></i><small class="text-muted" id="date">${` Inconue <span class="sep-date">|</span><i class="fas fa-clock"></i> ${runtime} `} </small></p>`;
@@ -140,7 +131,7 @@ export const generateHtmlDetailsMovie = (
                         <i class="far fa-star"></i>
                         <i class="far fa-star"></i>
                       
-                        <div class="stars-yellow" style="width : ${averageStarsPourcent}">
+                        <div class="stars-yellow" style="width : ${average}">
                           <i class="fas fa-star"></i>
                           <i class="fas fa-star"></i>
                           <i class="fas fa-star"></i>
@@ -150,12 +141,13 @@ export const generateHtmlDetailsMovie = (
                       </div>
                 </div>
                 
-                <p class="card-text"><span class="subtitle">Description: </span> ${overview}</p>
+                <p class="card-text" id="overview-detail"><span class="subtitle">Description: </span> ${overview}</p>
                 <div class="secondary-detail">
-                  <p><span class="subtitle">Genres: </span> ${nameGenres}</p>
-                  <p><span class="subtitle">Directeur:</span></p>
+                <p><span class="subtitle">Langues parlées : </span>${countries}</p>
+                  <p><span class="subtitle">Genres: </span> ${genres}</p>
+                  <p><span class="subtitle">Sociétés de production :</span> ${prod} </p>
                   <p><span class="subtitle">Budget: </span>${budget}</p>
-                  <p><span class="subtitle">Pays: </span>${nameCountry}</p>
+                  <p><span class="subtitle">Revenue: </span>${revenue}</p>
                 </div>
               </div>  
             
