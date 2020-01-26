@@ -473,8 +473,9 @@ body {
         
           @include mixin-shadow-card;
           .section-img{
-            width: 205px;
+            height: auto;
             @media (max-width: 576px){
+              // width: 205px;
               width: 100%;
               display: flex;
               justify-content: center;
