@@ -239,7 +239,6 @@ window.viewMore = function (id) {
     const budget = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(resp.budget)
     const revenue = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(resp.revenue)
     console.log(resp)
-    console.log(revenue)
     card += generateHtmlDetailsMovie(
       resp.poster_path,
       resp.title,
@@ -342,6 +341,10 @@ const orderBy = (reset) => {
   const year = document.getElementById("dropdown-years").value;
   const nameChecked = getCheckbox();
   let actor = "";
+  const range = document.getElementById("formControlRange");
+  const label = document.getElementById("range-time").textContent;
+  document.getElementById("title-home").innerHTML = "Trier par :";
+
   if (document.getElementById("tag")) {
     actor = document.getElementById("tag").textContent.replace(" ", "%20");
 
@@ -372,6 +375,14 @@ const orderBy = (reset) => {
             }
           });
         }
+        else if(label !== ""){
+          // console.log("fzefzfzfezffezf")
+          setLoader();
+          getPopularByYear(idChecked, year, results => {
+          console.log(results)
+            displayLatestMovies((range.value * 3), results.results);
+      });
+        }
         else {
           setLoader();
           getPopularByYear(idChecked, year, results => {
@@ -401,8 +412,9 @@ const orderBy = (reset) => {
       });
     }
     else{
+      
       setLoader();
-      getLatestMovies("", "", results => {
+      getPopularByYear("", year, results => {
         displayLatestMovies("", results.results);
       });
     }
@@ -428,12 +440,23 @@ const orderBy = (reset) => {
       }
     });
   }
+  else if (label !== "") {
+    
+      setLoader();
+      getPopularByYear("", year, results => {
+        displayLatestMovies((range.value * 3), results.results);
+      });
+    
+    
+
+  }
   else if (year !== "") {
     setLoader();
     getPopularByYear("", year, results => {
       displayLatestMovies("", results.results);
     });
   }
+  
 };
 
 const getCheckbox = () => {
@@ -454,11 +477,7 @@ const getCheckbox = () => {
 const removeTag = element => {
   if (element.getAttribute("id") === "cross-tag" || element.parentNode.getAttribute("id") === "cross-tag") {
     document.getElementById("tag").remove();
-    setLoader();
-    getLatestMovies("", "", results => {
-      displayLatestMovies("", results.results);
-    });
-    document.getElementById("title-home").innerHTML = "Les derniers films :";
+    orderBy(false)
   }
 };
 
@@ -488,10 +507,18 @@ feedDropDownYears();
 getLatestMovies("", "", results => {
   displayLatestMovies("", results.results);
 });
-
 //-------------
 // Event listener
 //-------------
+
+// reload page to display latest movies
+const reload = document.getElementById("reload");
+reload.addEventListener("click", event => {
+  document.getElementById("title-home").innerHTML = "Les derniers films :";
+
+  document.location.reload(true);
+});
+
 // when dropdown of year is change to filter by
 const dropdownYear = document.getElementById("dropdown-years");
 dropdownYear.addEventListener("change", () => {
@@ -527,15 +554,12 @@ actorSection.addEventListener("click", event => {
 //When rangeControl is change to filter by runtime
 const timeRange = document.getElementById("formControlRange");
 timeRange.addEventListener("change", () => {
-  const label = document.getElementById("formControlRange");
-  const range = document.getElementById("range-time");
+  const range = document.getElementById("formControlRange");
+  const label = document.getElementById("range-time");
 
-  range.innerHTML = convertTime(label.value * 3);
-  setLoader();
-  getLatestMovies("", "", results => {
-    displayLatestMovies((label.value * 3), results.results);
-  });
-  const value = event.target.value;
+  label.innerHTML = convertTime(range.value * 3);
+  orderBy(false);
+  
 });
 
 const displayArrow = () => {

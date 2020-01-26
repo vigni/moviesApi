@@ -11,8 +11,8 @@ export const generateCard = (poster, title, id, date, runtime, overview, average
         
           <div class="card">
             <div class="row no-gutters">
-              <div class="col-md-3">
-                <img  height="250px" id="picture" src="${
+              <div class="section-img col-md-3">
+                <img  height="100%" id="picture" src="${
                   poster === null ? posterUrlIfNull : posterUrl
                 }" class="card-img">
               </div>
@@ -100,8 +100,8 @@ export const generateHtmlDetailsMovie = (
   let html = "";
   html = `<div class="one-movie-detail row">
               <div class="detail-top col-3">
-                <div class="poster-movie">
-                  <img id="picture" src="${poster === null ? posterUrlIfNull : posterUrl}" class="card-img" />
+                <div class="poster-movie section-img">
+                  <img height="100%" id="picture" src="${poster === null ? posterUrlIfNull : posterUrl}" class="card-img" />
                   </div> </div>
               <div class="detail col-9" >
               <div class="title-one-movie">

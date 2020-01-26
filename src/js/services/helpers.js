@@ -1,8 +1,8 @@
 // eslint-disable-next-line import/prefer-default-export
 export const sliceOverview = (resume) => {
   let overviewSlice = resume;
-  if (overviewSlice.length > 200) {
-    overviewSlice = `${resume.slice(0, 200)}...`;
+  if (overviewSlice.length > 120) {
+    overviewSlice = `${resume.slice(0, 120)}...`;
   }
   return overviewSlice;
 }
